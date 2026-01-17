@@ -1,0 +1,335 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =============================================
+   FlowForge Demo - Global Styles
+   ============================================= */
+
+@layer base {
+  :root {
+    /* Base colors */
+    --background: 10 10 15;
+    --surface: 18 18 24;
+    --surface-hover: 26 26 35;
+    --border: 45 45 60;
+    --border-subtle: 35 35 48;
+    --border-accent: 58 58 79;
+
+    /* Text colors */
+    --text: 245 245 250;
+    --text-muted: 160 160 180;
+    --text-subtle: 100 100 120;
+
+    /* Primary colors */
+    --primary: 99 102 241;
+    --primary-hover: 79 82 221;
+    --primary-muted: 99 102 241 / 0.1;
+
+    /* Category colors */
+    --trigger: 34 197 94;
+    --action: 59 130 246;
+    --logic: 245 158 11;
+    --output: 168 85 247;
+    --transform: 6 182 212;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-text antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-surface;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-border-accent;
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--border)) rgb(var(--surface));
+  }
+}
+
+/* =============================================
+   React Flow Custom Styles
+   ============================================= */
+
+.react-flow__pane {
+  cursor: grab;
+}
+
+.react-flow__pane.dragging {
+  cursor: grabbing;
+}
+
+/* Node selection */
+.react-flow__node.selected > div {
+  @apply ring-2 ring-primary ring-offset-2 ring-offset-background;
+}
+
+/* Edge styles */
+.react-flow__edge-path {
+  stroke-width: 2;
+}
+
+.react-flow__edge.selected .react-flow__edge-path,
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: rgb(var(--primary)) !important;
+}
+
+.react-flow__edge.animated .react-flow__edge-path {
+  stroke-dasharray: 5;
+  animation: dash 0.5s linear infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -10;
+  }
+}
+
+/* Connection line */
+.react-flow__connection-line {
+  stroke: rgb(var(--primary));
+  stroke-width: 2;
+}
+
+/* Handle styles */
+.react-flow__handle {
+  @apply w-3 h-3 border-2 border-border bg-surface;
+  transition: all 0.15s ease;
+}
+
+.react-flow__handle:hover {
+  @apply border-primary bg-primary scale-110;
+}
+
+.react-flow__handle-connecting {
+  @apply border-primary bg-primary;
+}
+
+.react-flow__handle-valid {
+  @apply border-green-500 bg-green-500;
+}
+
+/* Controls styling */
+.react-flow__controls {
+  @apply bg-surface border border-border rounded-lg shadow-lg overflow-hidden;
+}
+
+.react-flow__controls-button {
+  @apply bg-surface border-none text-text-muted fill-current;
+  width: 28px;
+  height: 28px;
+}
+
+.react-flow__controls-button:hover {
+  @apply bg-surface-hover text-text;
+}
+
+.react-flow__controls-button svg {
+  max-width: 14px;
+  max-height: 14px;
+}
+
+/* MiniMap styling */
+.react-flow__minimap {
+  @apply bg-surface border border-border rounded-lg shadow-lg overflow-hidden;
+}
+
+.react-flow__minimap-mask {
+  fill: rgba(10, 10, 15, 0.8);
+}
+
+/* Background */
+.react-flow__background {
+  background-color: rgb(var(--background));
+}
+
+/* Attribution hide */
+.react-flow__attribution {
+  display: none !important;
+}
+
+/* =============================================
+   Animation Utilities
+   ============================================= */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(99, 102, 241, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.8);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+.animate-slide-down {
+  animation: slide-down 0.3s ease-out;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.2s ease-out;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* =============================================
+   Component Utilities
+   ============================================= */
+
+/* Card hover effect */
+.card-hover {
+  @apply transition-all duration-200;
+}
+
+.card-hover:hover {
+  @apply border-border-accent shadow-lg;
+  transform: translateY(-2px);
+}
+
+/* Focus ring */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background;
+}
+
+/* Button base */
+.btn {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors focus-ring;
+}
+
+.btn-primary {
+  @apply bg-primary hover:bg-primary-hover text-white;
+}
+
+.btn-secondary {
+  @apply bg-surface-hover hover:bg-border text-text;
+}
+
+.btn-ghost {
+  @apply hover:bg-surface-hover text-text-muted hover:text-text;
+}
+
+/* Input base */
+.input {
+  @apply w-full px-3 py-2 text-sm bg-background border border-border rounded-lg text-text placeholder:text-text-subtle focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+}
+
+/* Badge */
+.badge {
+  @apply inline-flex items-center px-2 py-0.5 text-xs font-medium rounded;
+}
+
+.badge-success {
+  @apply bg-green-500/20 text-green-400;
+}
+
+.badge-warning {
+  @apply bg-amber-500/20 text-amber-400;
+}
+
+.badge-error {
+  @apply bg-red-500/20 text-red-400;
+}
+
+.badge-info {
+  @apply bg-blue-500/20 text-blue-400;
+}
+
+/* Tooltip */
+.tooltip {
+  @apply absolute z-50 px-2 py-1 text-xs bg-surface border border-border rounded shadow-lg text-text pointer-events-none;
+}
+
+/* =============================================
+   Node Category Colors
+   ============================================= */
+
+.node-trigger {
+  --node-color: var(--trigger);
+}
+
+.node-action {
+  --node-color: var(--action);
+}
+
+.node-logic {
+  --node-color: var(--logic);
+}
+
+.node-output {
+  --node-color: var(--output);
+}
+
+.node-transform {
+  --node-color: var(--transform);
+}
