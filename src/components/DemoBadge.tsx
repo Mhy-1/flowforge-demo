@@ -13,7 +13,7 @@ export function DemoBadge() {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-4 left-4 z-50">
       <div
         className={cn(
           'bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg shadow-lg transition-all duration-300',
@@ -28,10 +28,10 @@ export function DemoBadge() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
           </span>
-          <span className="text-sm font-medium">Demo Mode</span>
+          <span className="text-sm font-medium">وضع العرض</span>
           <svg
             className={cn(
-              'w-4 h-4 ml-auto transition-transform',
+              'w-4 h-4 mr-auto transition-transform',
               isExpanded && 'rotate-180'
             )}
             fill="none"
@@ -50,12 +50,12 @@ export function DemoBadge() {
         {isExpanded && (
           <div className="mt-3 space-y-3 text-white/90">
             <p className="text-xs leading-relaxed">
-              This is a demo version of FlowForge. Data is stored in your browser's
-              localStorage and will persist until cleared.
+              هذه نسخة تجريبية من فلو فورج. البيانات محفوظة في متصفحك
+              وستبقى حتى يتم مسحها.
             </p>
 
             <div className="space-y-2 text-xs">
-              <h4 className="font-medium text-white">Demo Features:</h4>
+              <h4 className="font-medium text-white">مميزات العرض:</h4>
               <ul className="space-y-1 text-white/80">
                 <li className="flex items-center gap-2">
                   <svg className="w-3 h-3 text-green-300" fill="currentColor" viewBox="0 0 20 20">
@@ -65,7 +65,7 @@ export function DemoBadge() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  Visual flow editor
+                  محرر المسارات البصري
                 </li>
                 <li className="flex items-center gap-2">
                   <svg className="w-3 h-3 text-green-300" fill="currentColor" viewBox="0 0 20 20">
@@ -75,7 +75,7 @@ export function DemoBadge() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  Mock flow execution
+                  تشغيل تجريبي للمسارات
                 </li>
                 <li className="flex items-center gap-2">
                   <svg className="w-3 h-3 text-green-300" fill="currentColor" viewBox="0 0 20 20">
@@ -85,7 +85,7 @@ export function DemoBadge() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  Import/Export flows
+                  استيراد/تصدير المسارات
                 </li>
                 <li className="flex items-center gap-2">
                   <svg className="w-3 h-3 text-green-300" fill="currentColor" viewBox="0 0 20 20">
@@ -95,14 +95,14 @@ export function DemoBadge() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  localStorage persistence
+                  حفظ محلي في المتصفح
                 </li>
               </ul>
             </div>
 
             <div className="pt-2 border-t border-white/20">
               <p className="text-[10px] text-white/60">
-                No database required. All data stays in your browser.
+                لا حاجة لقاعدة بيانات. جميع البيانات في متصفحك.
               </p>
             </div>
           </div>

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* =============================================
-   FlowForge Demo - Global Styles
+   FlowForge Demo - Global Styles (RTL Arabic)
    ============================================= */
 
 @layer base {
@@ -38,9 +38,19 @@
     @apply border-border;
   }
 
+  html {
+    direction: rtl;
+  }
+
   body {
     @apply bg-background text-text antialiased;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    line-height: 1.7;
+  }
+
+  /* Arabic typography improvements */
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.4;
   }
 
   /* Custom scrollbar */
@@ -77,6 +87,11 @@
 
 .react-flow__pane.dragging {
   cursor: grabbing;
+}
+
+/* Node base styling - remove default backgrounds */
+.react-flow__node {
+  background: transparent !important;
 }
 
 /* Node selection */
@@ -332,4 +347,193 @@
 
 .node-transform {
   --node-color: var(--transform);
+}
+
+/* =============================================
+   RTL Utilities
+   ============================================= */
+
+/* Icon flip for directional icons (arrows, chevrons) */
+.rtl-flip {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .icon-arrow-left {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .icon-arrow-right {
+  transform: scaleX(-1);
+}
+
+/* RTL-safe positioning */
+.start-0 {
+  inset-inline-start: 0;
+}
+
+.end-0 {
+  inset-inline-end: 0;
+}
+
+.start-auto {
+  inset-inline-start: auto;
+}
+
+.end-auto {
+  inset-inline-end: auto;
+}
+
+/* RTL scrollbar positioning */
+[dir="rtl"] ::-webkit-scrollbar {
+  direction: ltr;
+}
+
+/* React Flow RTL adjustments */
+[dir="rtl"] .react-flow__controls {
+  left: 10px;
+  right: auto;
+}
+
+[dir="rtl"] .react-flow__minimap {
+  left: 10px;
+  right: auto;
+}
+
+/* =============================================
+   Responsive Design
+   ============================================= */
+
+/* Mobile (< 640px) */
+@media (max-width: 639px) {
+  /* Touch targets */
+  .touch-target,
+  button,
+  a,
+  select,
+  .btn {
+    min-height: 44px;
+  }
+
+  /* Typography adjustments */
+  h1 {
+    @apply text-xl;
+  }
+
+  h2 {
+    @apply text-lg;
+  }
+
+  /* Flow cards - single column */
+  .flow-grid {
+    @apply grid-cols-1;
+  }
+
+  /* Hide sidebars on mobile */
+  .sidebar-desktop {
+    @apply hidden;
+  }
+
+  /* Full-width search */
+  .search-input {
+    @apply w-full;
+  }
+
+  /* Stack buttons on mobile */
+  .button-group {
+    @apply flex-col w-full;
+  }
+
+  .button-group > * {
+    @apply w-full;
+  }
+
+  /* Compact toolbar */
+  .toolbar-mobile {
+    @apply gap-2 px-3;
+  }
+
+  /* Hide non-essential text */
+  .hide-mobile {
+    @apply hidden;
+  }
+}
+
+/* Tablet (640px - 1024px) */
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Flow cards - 2 columns */
+  .flow-grid {
+    @apply grid-cols-2;
+  }
+
+  /* Collapsible sidebars */
+  .sidebar-collapsible {
+    @apply w-auto;
+  }
+}
+
+/* Desktop (>= 1024px) */
+@media (min-width: 1024px) {
+  /* Flow cards - 3 columns */
+  .flow-grid {
+    @apply grid-cols-3;
+  }
+
+  /* Full sidebars */
+  .sidebar-full {
+    @apply w-64;
+  }
+}
+
+/* Large desktop (>= 1280px) */
+@media (min-width: 1280px) {
+  .flow-grid {
+    @apply grid-cols-4;
+  }
+}
+
+/* Bottom drawer for mobile */
+.bottom-drawer {
+  @apply fixed inset-x-0 bottom-0 bg-surface border-t border-border rounded-t-2xl transform transition-transform duration-300 ease-out z-50;
+  max-height: 70vh;
+}
+
+.bottom-drawer.closed {
+  transform: translateY(calc(100% - 56px));
+}
+
+.bottom-drawer.open {
+  transform: translateY(0);
+}
+
+.drawer-handle {
+  @apply w-12 h-1.5 bg-border-accent rounded-full mx-auto my-3 cursor-pointer;
+}
+
+.drawer-handle:hover {
+  @apply bg-primary;
+}
+
+/* Safe area for devices with notches */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Mobile overlay */
+.mobile-overlay {
+  @apply fixed inset-0 bg-black/60 backdrop-blur-sm z-40;
+}
+
+/* Hide on mobile, show on desktop */
+@media (max-width: 1023px) {
+  .desktop-only {
+    @apply hidden;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-only {
+    @apply hidden;
+  }
 }

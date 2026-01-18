@@ -46,8 +46,8 @@ function ActionNodeComponent(props: NodeProps<FlowEditorNode>) {
 
         {!method && (
           <div className="flex items-center gap-1.5 text-xs text-text-muted">
-            <span>-&gt;</span>
-            <span>Configure action</span>
+            <span>⚡</span>
+            <span>إعداد الإجراء</span>
           </div>
         )}
       </div>

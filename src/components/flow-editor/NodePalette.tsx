@@ -94,15 +94,15 @@ export function NodePalette({ nodes, onDragStart }: NodePaletteProps) {
   );
 
   return (
-    <div className="w-64 border-r border-border bg-surface flex flex-col h-full">
+    <div className="w-64 border-r border-border bg-surface flex-col h-full hidden lg:flex">
       {/* Header */}
       <div className="p-4 border-b border-border-subtle">
-        <h2 className="text-sm font-medium text-text mb-3">Nodes</h2>
+        <h2 className="text-sm font-medium text-text mb-3">العقد</h2>
 
         {/* Search */}
         <div className="relative">
           <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-subtle"
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-subtle"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -111,10 +111,10 @@ export function NodePalette({ nodes, onDragStart }: NodePaletteProps) {
           </svg>
           <input
             type="text"
-            placeholder="Search nodes..."
+            placeholder="البحث في العقد..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-sm bg-background border border-border rounded-lg text-text placeholder:text-text-subtle focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full pr-9 pl-3 py-2 text-sm bg-background border border-border rounded-lg text-text placeholder:text-text-subtle focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           />
         </div>
       </div>
@@ -190,9 +190,9 @@ export function NodePalette({ nodes, onDragStart }: NodePaletteProps) {
         {/* Empty State */}
         {filteredGroups.size === 0 && (
           <div className="flex flex-col items-center justify-center py-8 text-center">
-            <p className="text-sm text-text-muted">No nodes found</p>
+            <p className="text-sm text-text-muted">لم يتم العثور على عقد</p>
             <p className="text-xs text-text-subtle mt-1">
-              Try a different search term
+              جرب كلمة بحث مختلفة
             </p>
           </div>
         )}
@@ -201,7 +201,7 @@ export function NodePalette({ nodes, onDragStart }: NodePaletteProps) {
       {/* Footer Hint */}
       <div className="p-3 border-t border-border-subtle">
         <p className="text-xs text-text-subtle text-center">
-          Drag nodes to the canvas
+          اسحب العقد إلى اللوحة
         </p>
       </div>
     </div>

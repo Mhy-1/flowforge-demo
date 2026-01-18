@@ -25,7 +25,7 @@ export function ImportFlowDialog({ isOpen, onClose, onImported }: ImportFlowDial
 
   const handleImport = useCallback(() => {
     if (!jsonInput.trim()) {
-      setError('Please paste JSON or upload a file');
+      setError('الرجاء لصق JSON أو رفع ملف');
       return;
     }
 
@@ -33,7 +33,7 @@ export function ImportFlowDialog({ isOpen, onClose, onImported }: ImportFlowDial
       const data = JSON.parse(jsonInput);
       const flow = importFlow(data);
       if (!flow) {
-        setError('Failed to import flow. Invalid flow data.');
+        setError('فشل استيراد المسار. بيانات المسار غير صالحة.');
         return;
       }
       onImported(flow);
@@ -42,9 +42,9 @@ export function ImportFlowDialog({ isOpen, onClose, onImported }: ImportFlowDial
       onClose();
     } catch (err) {
       if (err instanceof SyntaxError) {
-        setError('Invalid JSON format');
+        setError('تنسيق JSON غير صالح');
       } else {
-        setError(err instanceof Error ? err.message : 'Failed to import flow');
+        setError(err instanceof Error ? err.message : 'فشل استيراد المسار');
       }
     }
   }, [jsonInput, onImported, onClose]);
@@ -57,7 +57,7 @@ export function ImportFlowDialog({ isOpen, onClose, onImported }: ImportFlowDial
       setError(null);
     };
     reader.onerror = () => {
-      setError('Failed to read file');
+      setError('فشل قراءة الملف');
     };
     reader.readAsText(file);
   }, []);
@@ -71,7 +71,7 @@ export function ImportFlowDialog({ isOpen, onClose, onImported }: ImportFlowDial
       if (file && file.type === 'application/json') {
         handleFileUpload(file);
       } else {
-        setError('Please drop a JSON file');
+        setError('الرجاء إسقاط ملف JSON');
       }
     },
     [handleFileUpload]
@@ -127,9 +127,9 @@ export function ImportFlowDialog({ isOpen, onClose, onImported }: ImportFlowDial
               </svg>
             </div>
             <div>
-              <h2 className="text-lg font-medium text-text">Import Flow</h2>
+              <h2 className="text-lg font-medium text-text">استيراد مسار</h2>
               <p className="text-xs text-text-muted">
-                Import a flow from JSON file or paste JSON
+                استيراد مسار من ملف JSON أو لصق JSON
               </p>
             </div>
           </div>
@@ -181,13 +181,13 @@ export function ImportFlowDialog({ isOpen, onClose, onImported }: ImportFlowDial
               />
             </svg>
             <p className="text-sm text-text-muted mb-2">
-              Drag and drop a JSON file here, or
+              اسحب وأفلت ملف JSON هنا، أو
             </p>
             <button
               onClick={() => fileInputRef.current?.click()}
               className="text-sm text-primary hover:text-primary-hover font-medium"
             >
-              browse files
+              تصفح الملفات
             </button>
             <input
               ref={fileInputRef}
@@ -201,7 +201,7 @@ export function ImportFlowDialog({ isOpen, onClose, onImported }: ImportFlowDial
           {/* Divider */}
           <div className="flex items-center gap-3">
             <div className="flex-1 h-px bg-border" />
-            <span className="text-xs text-text-subtle">or paste JSON</span>
+            <span className="text-xs text-text-subtle">أو الصق JSON</span>
             <div className="flex-1 h-px bg-border" />
           </div>
 
@@ -244,14 +244,14 @@ export function ImportFlowDialog({ isOpen, onClose, onImported }: ImportFlowDial
             onClick={onClose}
             className="px-4 py-2 text-sm text-text-muted hover:text-text hover:bg-surface-hover rounded-lg transition-colors"
           >
-            Cancel
+            إلغاء
           </button>
           <button
             onClick={handleImport}
             disabled={!jsonInput.trim()}
             className="px-4 py-2 text-sm bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
           >
-            Import Flow
+            استيراد المسار
           </button>
         </div>
       </div>

@@ -30,17 +30,27 @@ function OutputNodeComponent(props: NodeProps<FlowEditorNode>) {
     }
   };
 
+  const getLevelLabel = (level: string) => {
+    const labels: Record<string, string> = {
+      debug: 'تصحيح',
+      info: 'معلومات',
+      warn: 'تحذير',
+      error: 'خطأ',
+    };
+    return labels[level] || level;
+  };
+
   return (
     <BaseNode {...props} showInput={true} showOutput={true}>
       <div className="space-y-1.5">
         {logLevel && (
           <div className="flex items-center gap-2">
             <span
-              className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium ${getLevelStyles(
+              className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium ${getLevelStyles(
                 logLevel
               )}`}
             >
-              {logLevel.toUpperCase()}
+              {getLevelLabel(logLevel)}
             </span>
           </div>
         )}
@@ -54,8 +64,8 @@ function OutputNodeComponent(props: NodeProps<FlowEditorNode>) {
 
         {!logLevel && !message && (
           <div className="flex items-center gap-1.5 text-xs text-text-muted">
-            <span className="text-purple-400">*</span>
-            <span>Output data</span>
+            <span className="text-purple-400">◀</span>
+            <span>نقطة نهاية المسار</span>
           </div>
         )}
       </div>

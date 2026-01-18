@@ -6,7 +6,7 @@
  * Main visual editor for creating and editing flows
  */
 
-import { useState, useCallback, useEffect, useMemo, use } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   useNodesState,
@@ -37,13 +37,12 @@ import type { FlowEditorNode, FlowEditorEdge, FlowNodeData } from '@/components/
 import type { Flow, Run, ExecutionLog } from '@/types';
 
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
 export default function EditorPage({ params }: PageProps) {
-  const resolvedParams = use(params);
   const router = useRouter();
-  const flowId = resolvedParams.id;
+  const flowId = params.id;
 
   // Flow state
   const [flow, setFlow] = useState<Flow | null>(null);
@@ -365,6 +364,13 @@ export default function EditorPage({ params }: PageProps) {
 
   return (
     <div className="h-screen flex flex-col bg-background">
+      {/* Mobile Notice */}
+      <div className="lg:hidden bg-amber-500/20 border-b border-amber-500/30 px-4 py-3 text-center">
+        <p className="text-sm text-amber-400">
+          للحصول على أفضل تجربة، استخدم جهاز الكمبيوتر لتعديل المسارات
+        </p>
+      </div>
+
       {/* Toolbar */}
       <FlowToolbar
         flow={flow}

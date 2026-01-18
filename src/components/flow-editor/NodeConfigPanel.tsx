@@ -50,7 +50,7 @@ export function NodeConfigPanel({
     return (
       <div
         className={cn(
-          'w-80 border-l border-border bg-surface flex flex-col',
+          'w-80 border-l border-border bg-surface flex-col hidden lg:flex',
           className
         )}
       >
@@ -69,7 +69,7 @@ export function NodeConfigPanel({
                 d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
               />
             </svg>
-            <p className="text-sm">Select a node to configure</p>
+            <p className="text-sm">اختر عقدة للتعديل</p>
           </div>
         </div>
       </div>
@@ -83,7 +83,7 @@ export function NodeConfigPanel({
   return (
     <div
       className={cn(
-        'w-80 border-l border-border bg-surface flex flex-col',
+        'w-80 border-l border-border bg-surface flex-col hidden lg:flex',
         className
       )}
     >
@@ -133,12 +133,12 @@ export function NodeConfigPanel({
       {/* Properties */}
       <div className="flex-1 overflow-y-auto p-4">
         <h4 className="text-xs font-medium text-text-muted uppercase tracking-wider mb-3">
-          Configuration
+          الإعدادات
         </h4>
 
         {nodeDefinition.properties.length === 0 ? (
           <p className="text-sm text-text-subtle italic">
-            This node has no configurable properties.
+            هذه العقدة لا تحتوي على خصائص قابلة للتعديل.
           </p>
         ) : (
           <div className="space-y-4">
@@ -157,7 +157,7 @@ export function NodeConfigPanel({
       {/* Node ID Footer */}
       <div className="px-4 py-3 border-t border-border-subtle">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-text-subtle">Node ID</span>
+          <span className="text-text-subtle">معرف العقدة</span>
           <code className="px-2 py-0.5 bg-background rounded text-text-muted font-mono text-[10px]">
             {node.id.slice(0, 12)}...
           </code>
@@ -231,7 +231,7 @@ function PropertyField({ property, value, onChange }: PropertyFieldProps) {
               <div className="w-10 h-5 bg-border rounded-full peer-checked:bg-primary transition-colors" />
               <div className="absolute top-0.5 left-0.5 w-4 h-4 bg-text-subtle rounded-full peer-checked:translate-x-5 peer-checked:bg-white transition-all" />
             </div>
-            <span className="text-sm text-text">{value ? 'Enabled' : 'Disabled'}</span>
+            <span className="text-sm text-text">{value ? 'مفعّل' : 'معطّل'}</span>
           </label>
         );
 
@@ -243,7 +243,7 @@ function PropertyField({ property, value, onChange }: PropertyFieldProps) {
             onChange={(e) => onChange(e.target.value)}
             className="w-full px-3 py-2 text-sm bg-background border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           >
-            <option value="">Select...</option>
+            <option value="">اختر...</option>
             {property.options?.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label || option.name}

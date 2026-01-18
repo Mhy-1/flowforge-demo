@@ -173,9 +173,9 @@ export const categoryStyles: Record<NodeCategory, { bg: string; border: string; 
  * Category labels and icons
  */
 export const categoryConfig: Record<NodeCategory, { label: string; icon: string }> = {
-  trigger: { label: 'Triggers', icon: 'Zap' },
-  action: { label: 'Actions', icon: 'Play' },
-  logic: { label: 'Logic', icon: 'GitBranch' },
-  output: { label: 'Outputs', icon: 'Send' },
-  transform: { label: 'Transform', icon: 'RefreshCw' },
+  trigger: { label: 'المشغلات', icon: 'Zap' },
+  action: { label: 'الإجراءات', icon: 'Play' },
+  logic: { label: 'المنطق', icon: 'GitBranch' },
+  output: { label: 'المخرجات', icon: 'Send' },
+  transform: { label: 'التحويل', icon: 'RefreshCw' },
 };

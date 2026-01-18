@@ -24,10 +24,10 @@ function LogicNodeComponent(props: NodeProps<FlowEditorNode>) {
         'hover:shadow-lg hover:shadow-black/20'
       )}
     >
-      {/* Input Handle */}
+      {/* Input Handle - Right side for RTL */}
       <Handle
         type="target"
-        position={Position.Left}
+        position={Position.Right}
         id="input"
         className={cn(
           '!w-3 !h-3 !bg-surface-active !border-2 transition-colors',
@@ -56,16 +56,16 @@ function LogicNodeComponent(props: NodeProps<FlowEditorNode>) {
         {/* Logic indicator */}
         <div className="mt-2 pt-2 border-t border-border-subtle">
           <div className="flex items-center gap-1.5 text-xs text-text-muted">
-            <span className="text-amber-400">/</span>
-            <span>Conditional branching</span>
+            <span className="text-amber-400">🔀</span>
+            <span>تفريع شرطي</span>
           </div>
         </div>
       </div>
 
-      {/* Multiple Output Handles for branches */}
+      {/* Multiple Output Handles for branches - Left side for RTL */}
       <Handle
         type="source"
-        position={Position.Right}
+        position={Position.Left}
         id="true"
         style={{ top: '35%' }}
         className={cn(
@@ -75,7 +75,7 @@ function LogicNodeComponent(props: NodeProps<FlowEditorNode>) {
       />
       <Handle
         type="source"
-        position={Position.Right}
+        position={Position.Left}
         id="false"
         style={{ top: '65%' }}
         className={cn(
@@ -84,12 +84,12 @@ function LogicNodeComponent(props: NodeProps<FlowEditorNode>) {
         )}
       />
 
-      {/* Branch Labels */}
-      <div className="absolute right-6 top-[35%] -translate-y-1/2 text-[10px] text-success font-medium">
-        TRUE
+      {/* Branch Labels - Next to handles */}
+      <div className="absolute -left-12 top-[35%] -translate-y-1/2 flex items-center gap-1">
+        <span className="text-[10px] font-medium text-success bg-success/20 px-1.5 py-0.5 rounded">نعم</span>
       </div>
-      <div className="absolute right-6 top-[65%] -translate-y-1/2 text-[10px] text-error font-medium">
-        FALSE
+      <div className="absolute -left-10 top-[65%] -translate-y-1/2 flex items-center gap-1">
+        <span className="text-[10px] font-medium text-error bg-error/20 px-1.5 py-0.5 rounded">لا</span>
       </div>
 
       {/* Category Indicator */}

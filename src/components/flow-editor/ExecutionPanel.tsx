@@ -85,7 +85,7 @@ export function ExecutionPanel({
 
   const formatTimestamp = (timestamp: string) => {
     const date = new Date(timestamp);
-    return date.toLocaleTimeString('en-US', {
+    return date.toLocaleTimeString('ar-SA', {
       hour12: false,
       hour: '2-digit',
       minute: '2-digit',
@@ -127,13 +127,13 @@ export function ExecutionPanel({
                 d="M5 15l7-7 7 7"
               />
             </svg>
-            <span>Execution Logs</span>
+            <span>سجل التشغيل</span>
           </button>
 
           {isRunning && (
             <div className="flex items-center gap-1.5 text-xs text-amber-400">
               <span className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
-              <span>Running</span>
+              <span>قيد التشغيل</span>
             </div>
           )}
 
@@ -146,12 +146,12 @@ export function ExecutionPanel({
                   : 'text-red-400 bg-red-500/10'
               )}
             >
-              {currentRun.status === 'completed' ? 'Completed' : 'Failed'}
+              {currentRun.status === 'completed' ? 'مكتمل' : 'فشل'}
             </span>
           )}
 
           <span className="text-xs text-text-subtle">
-            {logs.length} {logs.length === 1 ? 'entry' : 'entries'}
+            {logs.length} سجل
           </span>
         </div>
 
@@ -160,7 +160,7 @@ export function ExecutionPanel({
           disabled={logs.length === 0}
           className="text-xs text-text-muted hover:text-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          Clear
+          مسح
         </button>
       </div>
 
@@ -169,7 +169,7 @@ export function ExecutionPanel({
         <div className="flex-1 overflow-auto font-mono text-xs p-2 space-y-0.5">
           {logs.length === 0 ? (
             <div className="flex items-center justify-center h-full text-text-subtle">
-              <p>No logs yet. Run the flow to see execution logs.</p>
+              <p>لا توجد سجلات بعد. قم بتشغيل المسار لرؤية سجلات التشغيل.</p>
             </div>
           ) : (
             <>

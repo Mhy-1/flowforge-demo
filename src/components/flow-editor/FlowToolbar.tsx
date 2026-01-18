@@ -71,10 +71,10 @@ export function FlowToolbar({
   };
 
   const getStatusText = () => {
-    if (isRunning) return 'Running...';
-    if (lastRun?.status === 'completed') return 'Last run: Success';
-    if (lastRun?.status === 'failed') return 'Last run: Failed';
-    return 'Never run';
+    if (isRunning) return 'جاري التشغيل...';
+    if (lastRun?.status === 'completed') return 'آخر تشغيل: نجاح';
+    if (lastRun?.status === 'failed') return 'آخر تشغيل: فشل';
+    return 'لم يتم التشغيل';
   };
 
   return (
@@ -89,10 +89,10 @@ export function FlowToolbar({
         <button
           onClick={onBack}
           className="flex items-center gap-1.5 text-sm text-text-muted hover:text-text transition-colors"
-          aria-label="Back to dashboard"
+          aria-label="العودة للوحة التحكم"
         >
           <svg
-            className="w-4 h-4"
+            className="w-4 h-4 rtl-flip"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -104,7 +104,7 @@ export function FlowToolbar({
               d="M15 19l-7-7 7-7"
             />
           </svg>
-          <span>Back</span>
+          <span>رجوع</span>
         </button>
 
         <div className="h-6 w-px bg-border" />
@@ -143,7 +143,7 @@ export function FlowToolbar({
 
         {hasUnsavedChanges && (
           <span className="text-xs text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">
-            Unsaved
+            غير محفوظ
           </span>
         )}
       </div>
@@ -160,7 +160,7 @@ export function FlowToolbar({
         <button
           onClick={onImport}
           className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-text-muted hover:text-text hover:bg-surface-hover rounded-lg transition-colors"
-          title="Import Flow"
+          title="استيراد مسار"
         >
           <svg
             className="w-4 h-4"
@@ -175,14 +175,14 @@ export function FlowToolbar({
               d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
             />
           </svg>
-          <span>Import</span>
+          <span>استيراد</span>
         </button>
 
         {/* Export */}
         <button
           onClick={onExport}
           className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-text-muted hover:text-text hover:bg-surface-hover rounded-lg transition-colors"
-          title="Export Flow"
+          title="تصدير مسار"
         >
           <svg
             className="w-4 h-4"
@@ -197,7 +197,7 @@ export function FlowToolbar({
               d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
             />
           </svg>
-          <span>Export</span>
+          <span>تصدير</span>
         </button>
 
         <div className="h-6 w-px bg-border mx-1" />
@@ -234,7 +234,7 @@ export function FlowToolbar({
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 />
               </svg>
-              <span>Saving...</span>
+              <span>جاري الحفظ...</span>
             </>
           ) : (
             <>
@@ -251,7 +251,7 @@ export function FlowToolbar({
                   d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
                 />
               </svg>
-              <span>Save</span>
+              <span>حفظ</span>
             </>
           )}
         </button>
@@ -288,7 +288,7 @@ export function FlowToolbar({
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 />
               </svg>
-              <span>Running...</span>
+              <span>جاري التشغيل...</span>
             </>
           ) : (
             <>
@@ -311,7 +311,7 @@ export function FlowToolbar({
                   d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <span>Run Flow</span>
+              <span>تشغيل</span>
             </>
           )}
         </button>

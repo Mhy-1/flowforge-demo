@@ -9,8 +9,8 @@ import type { Flow } from '@/types';
 export const sampleFlows: Flow[] = [
   {
     id: 'flow-welcome-email',
-    name: 'Welcome Email Flow',
-    description: 'Sends a welcome email when a new user signs up via webhook',
+    name: 'مسار رسالة الترحيب',
+    description: 'يرسل رسالة ترحيب عند تسجيل مستخدم جديد عبر Webhook',
     status: 'active',
     nodes: [
       {
@@ -19,15 +19,15 @@ export const sampleFlows: Flow[] = [
         position: { x: 100, y: 200 },
         data: {
           nodeType: 'webhook-trigger',
-          label: 'New User Webhook',
+          label: 'Webhook مستخدم جديد',
           category: 'trigger',
-          icon: 'Webhook',
+          icon: '🌐',
           properties: {
             path: '/webhook/new-user',
             method: 'POST',
           },
         },
-        label: 'New User Webhook',
+        label: 'Webhook مستخدم جديد',
       },
       {
         id: 'node-2',
@@ -35,14 +35,14 @@ export const sampleFlows: Flow[] = [
         position: { x: 350, y: 200 },
         data: {
           nodeType: 'json-transform',
-          label: 'Format Email Data',
+          label: 'تنسيق بيانات البريد',
           category: 'transform',
-          icon: 'Code',
+          icon: '💻',
           properties: {
             expression: '{ "to": $input.email, "name": $input.name }',
           },
         },
-        label: 'Format Email Data',
+        label: 'تنسيق بيانات البريد',
       },
       {
         id: 'node-3',
@@ -50,15 +50,15 @@ export const sampleFlows: Flow[] = [
         position: { x: 600, y: 200 },
         data: {
           nodeType: 'email-node',
-          label: 'Send Welcome Email',
+          label: 'إرسال رسالة الترحيب',
           category: 'output',
-          icon: 'Mail',
+          icon: '📧',
           properties: {
-            subject: 'Welcome to Our Platform!',
+            subject: 'مرحباً بك في منصتنا!',
             template: 'welcome',
           },
         },
-        label: 'Send Welcome Email',
+        label: 'إرسال رسالة الترحيب',
       },
       {
         id: 'node-4',
@@ -66,15 +66,15 @@ export const sampleFlows: Flow[] = [
         position: { x: 850, y: 200 },
         data: {
           nodeType: 'console-log',
-          label: 'Log Success',
+          label: 'تسجيل النجاح',
           category: 'output',
-          icon: 'Terminal',
+          icon: '📝',
           properties: {
-            message: 'Welcome email sent successfully',
+            message: 'تم إرسال رسالة الترحيب بنجاح',
             logLevel: 'info',
           },
         },
-        label: 'Log Success',
+        label: 'تسجيل النجاح',
       },
     ],
     edges: [
@@ -110,8 +110,8 @@ export const sampleFlows: Flow[] = [
   },
   {
     id: 'flow-data-sync',
-    name: 'Data Sync Flow',
-    description: 'Fetches data from API and syncs to database with transformation',
+    name: 'مسار مزامنة البيانات',
+    description: 'يجلب البيانات من API ويزامنها مع قاعدة البيانات مع التحويل',
     status: 'active',
     nodes: [
       {
@@ -120,15 +120,15 @@ export const sampleFlows: Flow[] = [
         position: { x: 100, y: 200 },
         data: {
           nodeType: 'schedule-trigger',
-          label: 'Daily Sync',
+          label: 'مزامنة يومية',
           category: 'trigger',
-          icon: 'Clock',
+          icon: '⏰',
           properties: {
             schedule: '0 9 * * *',
             timezone: 'UTC',
           },
         },
-        label: 'Daily Sync (9 AM)',
+        label: 'مزامنة يومية (9 صباحاً)',
       },
       {
         id: 'node-2',
@@ -136,15 +136,15 @@ export const sampleFlows: Flow[] = [
         position: { x: 350, y: 200 },
         data: {
           nodeType: 'http-request',
-          label: 'Fetch API Data',
+          label: 'جلب بيانات API',
           category: 'action',
-          icon: 'Globe',
+          icon: '🌐',
           properties: {
             method: 'GET',
             url: 'https://api.example.com/data',
           },
         },
-        label: 'Fetch API Data',
+        label: 'جلب بيانات API',
       },
       {
         id: 'node-3',
@@ -152,14 +152,14 @@ export const sampleFlows: Flow[] = [
         position: { x: 600, y: 200 },
         data: {
           nodeType: 'json-transform',
-          label: 'Transform Data',
+          label: 'تحويل البيانات',
           category: 'transform',
-          icon: 'RefreshCw',
+          icon: '🔄',
           properties: {
             mapping: 'standard',
           },
         },
-        label: 'Transform Data',
+        label: 'تحويل البيانات',
       },
       {
         id: 'node-4',
@@ -167,14 +167,14 @@ export const sampleFlows: Flow[] = [
         position: { x: 850, y: 200 },
         data: {
           nodeType: 'if-node',
-          label: 'Check Data Valid',
+          label: 'التحقق من صحة البيانات',
           category: 'logic',
-          icon: 'GitBranch',
+          icon: '🔀',
           properties: {
             condition: 'data.length > 0',
           },
         },
-        label: 'Check Data Valid',
+        label: 'التحقق من صحة البيانات',
       },
       {
         id: 'node-5',
@@ -182,15 +182,15 @@ export const sampleFlows: Flow[] = [
         position: { x: 1100, y: 150 },
         data: {
           nodeType: 'console-log',
-          label: 'Log Success',
+          label: 'تسجيل النجاح',
           category: 'output',
-          icon: 'CheckCircle',
+          icon: '✅',
           properties: {
-            message: 'Data sync completed',
+            message: 'اكتملت مزامنة البيانات',
             logLevel: 'info',
           },
         },
-        label: 'Log Success',
+        label: 'تسجيل النجاح',
       },
       {
         id: 'node-6',
@@ -198,15 +198,15 @@ export const sampleFlows: Flow[] = [
         position: { x: 1100, y: 300 },
         data: {
           nodeType: 'console-log',
-          label: 'Log Warning',
+          label: 'تسجيل تحذير',
           category: 'output',
-          icon: 'AlertTriangle',
+          icon: '⚠️',
           properties: {
-            message: 'No data to sync',
+            message: 'لا توجد بيانات للمزامنة',
             logLevel: 'warn',
           },
         },
-        label: 'Log Warning',
+        label: 'تسجيل تحذير',
       },
     ],
     edges: [
@@ -256,8 +256,8 @@ export const sampleFlows: Flow[] = [
   },
   {
     id: 'flow-notification',
-    name: 'Alert Notification Flow',
-    description: 'Monitors webhooks and sends Telegram notifications for important events',
+    name: 'مسار إشعارات التنبيه',
+    description: 'يراقب Webhooks ويرسل إشعارات تيليجرام للأحداث المهمة',
     status: 'active',
     nodes: [
       {
@@ -266,15 +266,15 @@ export const sampleFlows: Flow[] = [
         position: { x: 100, y: 200 },
         data: {
           nodeType: 'webhook-trigger',
-          label: 'Alert Webhook',
+          label: 'Webhook التنبيه',
           category: 'trigger',
-          icon: 'Webhook',
+          icon: '🌐',
           properties: {
             path: '/webhook/alert',
             method: 'POST',
           },
         },
-        label: 'Alert Webhook',
+        label: 'Webhook التنبيه',
       },
       {
         id: 'node-2',
@@ -282,14 +282,14 @@ export const sampleFlows: Flow[] = [
         position: { x: 350, y: 200 },
         data: {
           nodeType: 'if-node',
-          label: 'Check Severity',
+          label: 'فحص الأهمية',
           category: 'logic',
-          icon: 'GitBranch',
+          icon: '🔀',
           properties: {
             condition: 'severity === "high"',
           },
         },
-        label: 'Check Severity',
+        label: 'فحص الأهمية',
       },
       {
         id: 'node-3',
@@ -297,15 +297,15 @@ export const sampleFlows: Flow[] = [
         position: { x: 600, y: 150 },
         data: {
           nodeType: 'telegram-node',
-          label: 'Send Telegram Alert',
+          label: 'إرسال تنبيه تيليجرام',
           category: 'output',
-          icon: 'Send',
+          icon: '✈️',
           properties: {
             chatId: '@alerts_channel',
             parseMode: 'Markdown',
           },
         },
-        label: 'Send Telegram Alert',
+        label: 'إرسال تنبيه تيليجرام',
       },
       {
         id: 'node-4',
@@ -313,15 +313,15 @@ export const sampleFlows: Flow[] = [
         position: { x: 600, y: 300 },
         data: {
           nodeType: 'console-log',
-          label: 'Log Low Priority',
+          label: 'تسجيل منخفض الأهمية',
           category: 'output',
-          icon: 'Terminal',
+          icon: '📝',
           properties: {
-            message: 'Low priority alert logged',
+            message: 'تم تسجيل تنبيه منخفض الأهمية',
             logLevel: 'debug',
           },
         },
-        label: 'Log Low Priority',
+        label: 'تسجيل منخفض الأهمية',
       },
     ],
     edges: [
@@ -356,8 +356,8 @@ export const sampleFlows: Flow[] = [
   },
   {
     id: 'flow-ai-processor',
-    name: 'AI Content Processor',
-    description: 'Processes content using AI and outputs results',
+    name: 'معالج محتوى AI',
+    description: 'يعالج المحتوى باستخدام الذكاء الاصطناعي ويخرج النتائج',
     status: 'draft',
     nodes: [
       {
@@ -366,14 +366,14 @@ export const sampleFlows: Flow[] = [
         position: { x: 100, y: 200 },
         data: {
           nodeType: 'manual-trigger',
-          label: 'Manual Start',
+          label: 'بدء يدوي',
           category: 'trigger',
-          icon: 'Play',
+          icon: '▶️',
           properties: {
             passthrough: true,
           },
         },
-        label: 'Manual Start',
+        label: 'بدء يدوي',
       },
       {
         id: 'node-2',
@@ -381,15 +381,15 @@ export const sampleFlows: Flow[] = [
         position: { x: 350, y: 200 },
         data: {
           nodeType: 'ai-completion',
-          label: 'AI Analysis',
+          label: 'تحليل AI',
           category: 'action',
-          icon: 'Brain',
+          icon: '🧠',
           properties: {
             model: 'gpt-4',
             temperature: 0.7,
           },
         },
-        label: 'AI Analysis',
+        label: 'تحليل AI',
       },
       {
         id: 'node-3',
@@ -397,15 +397,15 @@ export const sampleFlows: Flow[] = [
         position: { x: 600, y: 200 },
         data: {
           nodeType: 'console-log',
-          label: 'Output Result',
+          label: 'إخراج النتيجة',
           category: 'output',
-          icon: 'Terminal',
+          icon: '📝',
           properties: {
             logLevel: 'info',
             prettyPrint: true,
           },
         },
-        label: 'Output Result',
+        label: 'إخراج النتيجة',
       },
     ],
     edges: [

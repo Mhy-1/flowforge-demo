@@ -33,33 +33,33 @@ const executionStatusConfig: Record<
   pending: {
     className: 'text-text-subtle',
     bgClassName: 'bg-surface-active',
-    label: 'Pending',
+    label: 'معلق',
   },
   running: {
     className: 'text-primary',
     bgClassName: 'bg-primary/20',
     animate: true,
-    label: 'Running',
+    label: 'جاري',
   },
   success: {
     className: 'text-success',
     bgClassName: 'bg-success/20',
-    label: 'Success',
+    label: 'نجاح',
   },
   error: {
     className: 'text-error',
     bgClassName: 'bg-error/20',
-    label: 'Error',
+    label: 'خطأ',
   },
   failed: {
     className: 'text-error',
     bgClassName: 'bg-error/20',
-    label: 'Failed',
+    label: 'فشل',
   },
   skipped: {
     className: 'text-text-muted',
     bgClassName: 'bg-surface',
-    label: 'Skipped',
+    label: 'تخطي',
   },
 };
 
@@ -85,11 +85,11 @@ function BaseNodeComponent({
         'hover:shadow-lg hover:shadow-black/20'
       )}
     >
-      {/* Input Handle */}
+      {/* Input Handle - Right side for RTL */}
       {showInput && (
         <Handle
           type="target"
-          position={Position.Left}
+          position={Position.Right}
           id="input"
           className={cn(
             '!w-3 !h-3 !bg-surface-active !border-2 transition-colors',
@@ -147,11 +147,11 @@ function BaseNodeComponent({
         )}
       </div>
 
-      {/* Output Handle */}
+      {/* Output Handle - Left side for RTL */}
       {showOutput && (
         <Handle
           type="source"
-          position={Position.Right}
+          position={Position.Left}
           id="output"
           className={cn(
             '!w-3 !h-3 !bg-surface-active !border-2 transition-colors',

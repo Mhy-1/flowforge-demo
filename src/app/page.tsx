@@ -38,7 +38,7 @@ export default function DashboardPage() {
 
   const handleCreateFlow = useCallback(() => {
     const newFlow = createFlow({
-      name: 'Untitled Flow',
+      name: 'مسار جديد',
       description: '',
       nodes: [],
       edges: [],
@@ -51,7 +51,7 @@ export default function DashboardPage() {
   }, []);
 
   const handleDeleteFlow = useCallback((flowId: string) => {
-    if (confirm('Are you sure you want to delete this flow?')) {
+    if (confirm('هل أنت متأكد من حذف هذا المسار؟')) {
       deleteFlow(flowId);
       setFlows(getFlows());
       setRuns(getRuns());
@@ -101,12 +101,23 @@ export default function DashboardPage() {
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString('ar-SA', {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
     });
+  };
+
+  const getStatusLabel = (status: string) => {
+    const statusLabels: Record<string, string> = {
+      completed: 'مكتمل',
+      success: 'نجاح',
+      failed: 'فشل',
+      running: 'قيد التشغيل',
+      pending: 'معلق',
+    };
+    return statusLabels[status] || status;
   };
 
   if (isLoading) {
@@ -121,7 +132,7 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-surface">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-primary to-purple-600 rounded-xl flex items-center justify-center">
@@ -140,15 +151,15 @@ export default function DashboardPage() {
                 </svg>
               </div>
               <div>
-                <h1 className="text-xl font-semibold text-text">FlowForge</h1>
-                <p className="text-xs text-text-muted">Visual Workflow Builder</p>
+                <h1 className="text-xl font-semibold text-text">فلو فورج</h1>
+                <p className="text-xs text-text-muted">منشئ سير العمل البصري</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <button
                 onClick={() => setShowImportDialog(true)}
-                className="flex items-center gap-2 px-4 py-2 text-sm text-text-muted hover:text-text hover:bg-surface-hover rounded-lg transition-colors"
+                className="flex items-center gap-2 px-3 sm:px-4 py-2 text-sm text-text-muted hover:text-text hover:bg-surface-hover rounded-lg transition-colors"
               >
                 <svg
                   className="w-4 h-4"
@@ -163,11 +174,11 @@ export default function DashboardPage() {
                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
                   />
                 </svg>
-                Import
+                <span className="hide-mobile">استيراد</span>
               </button>
               <button
                 onClick={handleCreateFlow}
-                className="flex items-center gap-2 px-4 py-2 text-sm bg-primary hover:bg-primary-hover text-white rounded-lg transition-colors"
+                className="flex items-center gap-2 px-3 sm:px-4 py-2 text-sm bg-primary hover:bg-primary-hover text-white rounded-lg transition-colors"
               >
                 <svg
                   className="w-4 h-4"
@@ -182,7 +193,7 @@ export default function DashboardPage() {
                     d="M12 4v16m8-8H4"
                   />
                 </svg>
-                New Flow
+                <span className="hide-mobile">مسار جديد</span>
               </button>
             </div>
           </div>
@@ -190,15 +201,15 @@ export default function DashboardPage() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Flows Section */}
           <div className="lg:col-span-2">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-medium text-text">Your Flows</h2>
-              <div className="relative">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+              <h2 className="text-lg font-medium text-text">مساراتك</h2>
+              <div className="relative w-full sm:w-auto">
                 <svg
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-subtle"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-subtle"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -212,10 +223,10 @@ export default function DashboardPage() {
                 </svg>
                 <input
                   type="text"
-                  placeholder="Search flows..."
+                  placeholder="البحث في المسارات..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 pr-3 py-2 text-sm bg-surface border border-border rounded-lg text-text placeholder:text-text-subtle focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent w-64"
+                  className="search-input pr-9 pl-3 py-2 text-sm bg-surface border border-border rounded-lg text-text placeholder:text-text-subtle focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent w-full sm:w-64"
                 />
               </div>
             </div>
@@ -237,9 +248,9 @@ export default function DashboardPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-medium text-text mb-2">No flows yet</h3>
+                <h3 className="text-lg font-medium text-text mb-2">لا توجد مسارات بعد</h3>
                 <p className="text-sm text-text-muted mb-6">
-                  Create your first workflow to get started
+                  أنشئ مسارك الأول للبدء
                 </p>
                 <button
                   onClick={handleCreateFlow}
@@ -258,11 +269,11 @@ export default function DashboardPage() {
                       d="M12 4v16m8-8H4"
                     />
                   </svg>
-                  Create Flow
+                  إنشاء مسار
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flow-grid grid gap-4">
                 {filteredFlows.map((flow) => {
                   const lastRun = getLastRun(flow.id);
                   const runCount = getFlowRunCount(flow.id);
@@ -281,7 +292,7 @@ export default function DashboardPage() {
                             {flow.name}
                           </h3>
                           <p className="text-xs text-text-muted mt-0.5">
-                            {flow.nodes.length} nodes
+                            {flow.nodes.length} عقدة
                           </p>
                         </Link>
 
@@ -289,7 +300,7 @@ export default function DashboardPage() {
                           <button
                             onClick={() => handleExportFlow(flow.id)}
                             className="p-1.5 text-text-subtle hover:text-text hover:bg-surface-hover rounded-md transition-colors"
-                            title="Export"
+                            title="تصدير"
                           >
                             <svg
                               className="w-4 h-4"
@@ -308,7 +319,7 @@ export default function DashboardPage() {
                           <button
                             onClick={() => handleDuplicateFlow(flow.id)}
                             className="p-1.5 text-text-subtle hover:text-text hover:bg-surface-hover rounded-md transition-colors"
-                            title="Duplicate"
+                            title="تكرار"
                           >
                             <svg
                               className="w-4 h-4"
@@ -327,7 +338,7 @@ export default function DashboardPage() {
                           <button
                             onClick={() => handleDeleteFlow(flow.id)}
                             className="p-1.5 text-text-subtle hover:text-red-400 hover:bg-red-500/10 rounded-md transition-colors"
-                            title="Delete"
+                            title="حذف"
                           >
                             <svg
                               className="w-4 h-4"
@@ -348,7 +359,7 @@ export default function DashboardPage() {
 
                       <div className="flex items-center justify-between text-xs">
                         <span className="text-text-subtle">
-                          {runCount} {runCount === 1 ? 'run' : 'runs'}
+                          {runCount} تشغيل
                         </span>
                         {lastRun && (
                           <span
@@ -361,13 +372,13 @@ export default function DashboardPage() {
                                 : 'bg-amber-500/20 text-amber-400'
                             )}
                           >
-                            {lastRun.status}
+                            {getStatusLabel(lastRun.status)}
                           </span>
                         )}
                       </div>
 
                       <div className="mt-3 pt-3 border-t border-border-subtle text-xs text-text-subtle">
-                        Updated {formatDate(flow.updatedAt)}
+                        آخر تحديث {formatDate(flow.updatedAt)}
                       </div>
                     </div>
                   );
@@ -378,11 +389,11 @@ export default function DashboardPage() {
 
           {/* Recent Runs Section */}
           <div>
-            <h2 className="text-lg font-medium text-text mb-4">Recent Runs</h2>
+            <h2 className="text-lg font-medium text-text mb-4">التشغيلات الأخيرة</h2>
 
             {recentRuns.length === 0 ? (
               <div className="bg-surface border border-border rounded-xl p-6 text-center">
-                <p className="text-sm text-text-muted">No runs yet</p>
+                <p className="text-sm text-text-muted">لا توجد تشغيلات بعد</p>
               </div>
             ) : (
               <div className="bg-surface border border-border rounded-xl divide-y divide-border-subtle">
@@ -396,7 +407,7 @@ export default function DashboardPage() {
                           href={`/editor/${run.flowId}`}
                           className="text-sm font-medium text-text hover:text-primary transition-colors truncate"
                         >
-                          {flow?.name || 'Unknown Flow'}
+                          {flow?.name || 'مسار غير معروف'}
                         </Link>
                         <span
                           className={cn(
@@ -408,7 +419,7 @@ export default function DashboardPage() {
                               : 'bg-amber-500/20 text-amber-400'
                           )}
                         >
-                          {run.status}
+                          {getStatusLabel(run.status)}
                         </span>
                       </div>
                       <div className="flex items-center justify-between text-xs text-text-subtle">
@@ -434,11 +445,11 @@ export default function DashboardPage() {
             <div className="mt-6 grid grid-cols-2 gap-4">
               <div className="bg-surface border border-border rounded-xl p-4 text-center">
                 <p className="text-2xl font-semibold text-text">{flows.length}</p>
-                <p className="text-xs text-text-muted">Total Flows</p>
+                <p className="text-xs text-text-muted">إجمالي المسارات</p>
               </div>
               <div className="bg-surface border border-border rounded-xl p-4 text-center">
                 <p className="text-2xl font-semibold text-text">{runs.length}</p>
-                <p className="text-xs text-text-muted">Total Runs</p>
+                <p className="text-xs text-text-muted">إجمالي التشغيلات</p>
               </div>
             </div>
           </div>

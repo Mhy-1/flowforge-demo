@@ -14,8 +14,8 @@ function TransformNodeComponent(props: NodeProps<FlowEditorNode>) {
     <BaseNode {...props} showInput={true} showOutput={true}>
       <div className="space-y-1.5">
         <div className="flex items-center gap-1.5 text-xs text-text-muted">
-          <span className="text-cyan-400">~</span>
-          <span>Transform data</span>
+          <span className="text-cyan-400">🔄</span>
+          <span>تحويل البيانات</span>
         </div>
       </div>
     </BaseNode>

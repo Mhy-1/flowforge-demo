@@ -215,9 +215,9 @@ export function FlowCanvas({
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-medium text-text mb-2">Start building your flow</h3>
+              <h3 className="text-lg font-medium text-text mb-2">ابدأ ببناء مسارك</h3>
               <p className="text-sm text-text-muted max-w-xs">
-                Drag nodes from the left panel to the canvas, then connect them to create your workflow.
+                اسحب العقد من لوحة العقد إلى اللوحة، ثم اربطها لإنشاء سير العمل.
               </p>
             </div>
           </Panel>

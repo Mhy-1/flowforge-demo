@@ -17,8 +17,8 @@ function TriggerNodeComponent(props: NodeProps<FlowEditorNode>) {
       {data.properties && Object.keys(data.properties).length > 0 && (
         <div className="space-y-1">
           <div className="flex items-center gap-1.5 text-xs text-text-muted">
-            <span className="text-emerald-400">*</span>
-            <span>Workflow entry point</span>
+            <span className="text-emerald-400">▶</span>
+            <span>نقطة بداية المسار</span>
           </div>
         </div>
       )}

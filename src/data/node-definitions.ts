@@ -12,28 +12,28 @@ import type { NodeDefinition } from '@/types';
 
 export const manualTriggerNode: NodeDefinition = {
   id: 'manual-trigger',
-  name: 'Manual Trigger',
-  description: 'Starts a flow manually. Use as entry point for flows triggered by user action.',
+  name: 'تشغيل يدوي',
+  description: 'يبدأ المسار يدوياً. استخدمه كنقطة بداية للمسارات التي يتم تشغيلها بواسطة المستخدم.',
   category: 'trigger',
   icon: '\u25b6\ufe0f',
   version: 1,
   inputs: [],
   outputs: [
-    { id: 'output', type: 'output', label: 'Output', dataType: 'any', multiple: true },
+    { id: 'output', type: 'output', label: 'المخرج', dataType: 'any', multiple: true },
   ],
   properties: [
     {
       name: 'passthrough',
-      displayName: 'Pass Through Trigger Data',
+      displayName: 'تمرير بيانات التشغيل',
       type: 'boolean',
-      description: 'Pass trigger data directly to output',
+      description: 'تمرير بيانات التشغيل مباشرة إلى المخرج',
       default: true,
     },
     {
       name: 'initialData',
-      displayName: 'Initial Data',
+      displayName: 'البيانات الأولية',
       type: 'json',
-      description: 'JSON data to output when triggered',
+      description: 'بيانات JSON للإخراج عند التشغيل',
       default: '{}',
       displayOptions: { show: { passthrough: [false] } },
     },
@@ -43,29 +43,29 @@ export const manualTriggerNode: NodeDefinition = {
 
 export const webhookTriggerNode: NodeDefinition = {
   id: 'webhook-trigger',
-  name: 'Webhook Trigger',
-  description: 'Starts a flow when a webhook is received. Useful for integrations.',
+  name: 'مشغل Webhook',
+  description: 'يبدأ المسار عند استلام Webhook. مفيد للتكاملات.',
   category: 'trigger',
   icon: '\ud83c\udf10',
   version: 1,
   inputs: [],
   outputs: [
-    { id: 'output', type: 'output', label: 'Output', dataType: 'any', multiple: true },
+    { id: 'output', type: 'output', label: 'المخرج', dataType: 'any', multiple: true },
   ],
   properties: [
     {
       name: 'path',
-      displayName: 'Webhook Path',
+      displayName: 'مسار Webhook',
       type: 'string',
-      description: 'The path for the webhook endpoint',
+      description: 'مسار نقطة نهاية Webhook',
       required: true,
       placeholder: '/webhook/my-hook',
     },
     {
       name: 'method',
-      displayName: 'HTTP Method',
+      displayName: 'طريقة HTTP',
       type: 'select',
-      description: 'Accepted HTTP method',
+      description: 'طريقة HTTP المقبولة',
       default: 'POST',
       options: [
         { name: 'POST', value: 'POST' },
@@ -79,29 +79,29 @@ export const webhookTriggerNode: NodeDefinition = {
 
 export const scheduleTriggerNode: NodeDefinition = {
   id: 'schedule-trigger',
-  name: 'Schedule Trigger',
-  description: 'Starts a flow on a schedule using cron syntax.',
+  name: 'جدولة',
+  description: 'يبدأ المسار وفق جدول زمني باستخدام صيغة cron.',
   category: 'trigger',
   icon: '\u23f0',
   version: 1,
   inputs: [],
   outputs: [
-    { id: 'output', type: 'output', label: 'Output', dataType: 'any', multiple: true },
+    { id: 'output', type: 'output', label: 'المخرج', dataType: 'any', multiple: true },
   ],
   properties: [
     {
       name: 'schedule',
-      displayName: 'Cron Schedule',
+      displayName: 'جدولة Cron',
       type: 'string',
-      description: 'Cron expression (e.g., "0 9 * * *" for 9 AM daily)',
+      description: 'تعبير Cron (مثال: "0 9 * * *" للساعة 9 صباحاً يومياً)',
       required: true,
       placeholder: '0 9 * * *',
     },
     {
       name: 'timezone',
-      displayName: 'Timezone',
+      displayName: 'المنطقة الزمنية',
       type: 'string',
-      description: 'Timezone for the schedule',
+      description: 'المنطقة الزمنية للجدولة',
       default: 'UTC',
     },
   ],
@@ -114,23 +114,23 @@ export const scheduleTriggerNode: NodeDefinition = {
 
 export const httpRequestNode: NodeDefinition = {
   id: 'http-request',
-  name: 'HTTP Request',
-  description: 'Makes HTTP requests to external APIs and services.',
+  name: 'طلب HTTP',
+  description: 'يرسل طلبات HTTP إلى واجهات API والخدمات الخارجية.',
   category: 'action',
   icon: '\ud83c\udf10',
   version: 1,
   inputs: [
-    { id: 'input', type: 'input', label: 'Input', dataType: 'any', multiple: true },
+    { id: 'input', type: 'input', label: 'المدخل', dataType: 'any', multiple: true },
   ],
   outputs: [
-    { id: 'output', type: 'output', label: 'Output', dataType: 'any', multiple: true },
+    { id: 'output', type: 'output', label: 'المخرج', dataType: 'any', multiple: true },
   ],
   properties: [
     {
       name: 'method',
-      displayName: 'Method',
+      displayName: 'الطريقة',
       type: 'select',
-      description: 'HTTP method',
+      description: 'طريقة HTTP',
       required: true,
       default: 'GET',
       options: [
@@ -143,24 +143,24 @@ export const httpRequestNode: NodeDefinition = {
     },
     {
       name: 'url',
-      displayName: 'URL',
+      displayName: 'الرابط URL',
       type: 'string',
-      description: 'Target URL',
+      description: 'الرابط المستهدف',
       required: true,
       placeholder: 'https://api.example.com/endpoint',
     },
     {
       name: 'headers',
-      displayName: 'Headers',
+      displayName: 'الترويسات',
       type: 'json',
-      description: 'Custom headers as JSON',
+      description: 'ترويسات مخصصة بصيغة JSON',
       default: '{}',
     },
     {
       name: 'body',
-      displayName: 'Body',
+      displayName: 'المحتوى',
       type: 'json',
-      description: 'Request body as JSON',
+      description: 'محتوى الطلب بصيغة JSON',
       default: '',
       displayOptions: { show: { method: ['POST', 'PUT', 'PATCH'] } },
     },
@@ -170,23 +170,23 @@ export const httpRequestNode: NodeDefinition = {
 
 export const aiCompletionNode: NodeDefinition = {
   id: 'ai-completion',
-  name: 'AI Completion',
-  description: 'Generate text using AI language models.',
+  name: 'إكمال AI',
+  description: 'توليد نص باستخدام نماذج الذكاء الاصطناعي.',
   category: 'action',
   icon: '\ud83e\udde0',
   version: 1,
   inputs: [
-    { id: 'input', type: 'input', label: 'Input', dataType: 'any', multiple: true },
+    { id: 'input', type: 'input', label: 'المدخل', dataType: 'any', multiple: true },
   ],
   outputs: [
-    { id: 'output', type: 'output', label: 'Output', dataType: 'any', multiple: true },
+    { id: 'output', type: 'output', label: 'المخرج', dataType: 'any', multiple: true },
   ],
   properties: [
     {
       name: 'model',
-      displayName: 'Model',
+      displayName: 'النموذج',
       type: 'select',
-      description: 'AI model to use',
+      description: 'نموذج AI المستخدم',
       default: 'gpt-4',
       options: [
         { name: 'GPT-4', value: 'gpt-4' },
@@ -196,16 +196,16 @@ export const aiCompletionNode: NodeDefinition = {
     },
     {
       name: 'prompt',
-      displayName: 'Prompt',
+      displayName: 'الطلب',
       type: 'string',
-      description: 'The prompt to send to the AI',
+      description: 'الطلب المرسل إلى AI',
       required: true,
     },
     {
       name: 'temperature',
-      displayName: 'Temperature',
+      displayName: 'الحرارة',
       type: 'number',
-      description: 'Randomness (0-1)',
+      description: 'العشوائية (0-1)',
       default: 0.7,
     },
   ],
@@ -214,23 +214,23 @@ export const aiCompletionNode: NodeDefinition = {
 
 export const jsonTransformNode: NodeDefinition = {
   id: 'json-transform',
-  name: 'JSON Transform',
-  description: 'Transform and manipulate JSON data.',
+  name: 'تحويل JSON',
+  description: 'تحويل ومعالجة بيانات JSON.',
   category: 'transform',
   icon: '\ud83d\udd04',
   version: 1,
   inputs: [
-    { id: 'input', type: 'input', label: 'Input', dataType: 'any', multiple: true },
+    { id: 'input', type: 'input', label: 'المدخل', dataType: 'any', multiple: true },
   ],
   outputs: [
-    { id: 'output', type: 'output', label: 'Output', dataType: 'any', multiple: true },
+    { id: 'output', type: 'output', label: 'المخرج', dataType: 'any', multiple: true },
   ],
   properties: [
     {
       name: 'expression',
-      displayName: 'Transform Expression',
+      displayName: 'تعبير التحويل',
       type: 'code',
-      description: 'JSONata expression for transformation',
+      description: 'تعبير JSONata للتحويل',
       required: true,
       placeholder: '{ "name": $.data.name }',
     },
@@ -240,23 +240,23 @@ export const jsonTransformNode: NodeDefinition = {
 
 export const codeNode: NodeDefinition = {
   id: 'code-node',
-  name: 'Code',
-  description: 'Execute custom JavaScript code.',
+  name: 'كود',
+  description: 'تنفيذ كود JavaScript مخصص.',
   category: 'action',
   icon: '\ud83d\udcbb',
   version: 1,
   inputs: [
-    { id: 'input', type: 'input', label: 'Input', dataType: 'any', multiple: true },
+    { id: 'input', type: 'input', label: 'المدخل', dataType: 'any', multiple: true },
   ],
   outputs: [
-    { id: 'output', type: 'output', label: 'Output', dataType: 'any', multiple: true },
+    { id: 'output', type: 'output', label: 'المخرج', dataType: 'any', multiple: true },
   ],
   properties: [
     {
       name: 'code',
-      displayName: 'JavaScript Code',
+      displayName: 'كود JavaScript',
       type: 'code',
-      description: 'Custom JavaScript code to execute',
+      description: 'كود JavaScript مخصص للتنفيذ',
       required: true,
       placeholder: 'return items.map(item => ({ ...item, processed: true }));',
     },
@@ -270,24 +270,24 @@ export const codeNode: NodeDefinition = {
 
 export const ifNode: NodeDefinition = {
   id: 'if-node',
-  name: 'IF Condition',
-  description: 'Route items based on a condition.',
+  name: 'شرط IF',
+  description: 'توجيه العناصر بناءً على شرط.',
   category: 'logic',
   icon: '\ud83d\udd00',
   version: 1,
   inputs: [
-    { id: 'input', type: 'input', label: 'Input', dataType: 'any', multiple: true },
+    { id: 'input', type: 'input', label: 'المدخل', dataType: 'any', multiple: true },
   ],
   outputs: [
-    { id: 'true', type: 'output', label: 'True', dataType: 'any' },
-    { id: 'false', type: 'output', label: 'False', dataType: 'any' },
+    { id: 'true', type: 'output', label: 'صحيح', dataType: 'any' },
+    { id: 'false', type: 'output', label: 'خطأ', dataType: 'any' },
   ],
   properties: [
     {
       name: 'condition',
-      displayName: 'Condition',
+      displayName: 'الشرط',
       type: 'string',
-      description: 'JavaScript expression that returns true/false',
+      description: 'تعبير JavaScript يرجع صحيح/خطأ',
       required: true,
       placeholder: 'data.status === "active"',
     },
@@ -297,31 +297,31 @@ export const ifNode: NodeDefinition = {
 
 export const switchNode: NodeDefinition = {
   id: 'switch-node',
-  name: 'Switch',
-  description: 'Route items to different outputs based on value.',
+  name: 'تبديل',
+  description: 'توجيه العناصر إلى مخرجات مختلفة بناءً على القيمة.',
   category: 'logic',
   icon: '\ud83d\udd00',
   version: 1,
   inputs: [
-    { id: 'input', type: 'input', label: 'Input', dataType: 'any', multiple: true },
+    { id: 'input', type: 'input', label: 'المدخل', dataType: 'any', multiple: true },
   ],
   outputs: [
-    { id: 'output', type: 'output', label: 'Output', dataType: 'any', multiple: true },
+    { id: 'output', type: 'output', label: 'المخرج', dataType: 'any', multiple: true },
   ],
   properties: [
     {
       name: 'field',
-      displayName: 'Field to Match',
+      displayName: 'الحقل للمطابقة',
       type: 'string',
-      description: 'Field path to evaluate',
+      description: 'مسار الحقل للتقييم',
       required: true,
       placeholder: 'data.type',
     },
     {
       name: 'cases',
-      displayName: 'Cases',
+      displayName: 'الحالات',
       type: 'json',
-      description: 'Case definitions as JSON',
+      description: 'تعريفات الحالات بصيغة JSON',
       default: '[]',
     },
   ],
@@ -330,29 +330,29 @@ export const switchNode: NodeDefinition = {
 
 export const mergeNode: NodeDefinition = {
   id: 'merge-node',
-  name: 'Merge',
-  description: 'Merge multiple inputs into one output.',
+  name: 'دمج',
+  description: 'دمج مدخلات متعددة في مخرج واحد.',
   category: 'logic',
   icon: '\ud83d\udd17',
   version: 1,
   inputs: [
-    { id: 'input1', type: 'input', label: 'Input 1', dataType: 'any' },
-    { id: 'input2', type: 'input', label: 'Input 2', dataType: 'any' },
+    { id: 'input1', type: 'input', label: 'المدخل 1', dataType: 'any' },
+    { id: 'input2', type: 'input', label: 'المدخل 2', dataType: 'any' },
   ],
   outputs: [
-    { id: 'output', type: 'output', label: 'Output', dataType: 'any', multiple: true },
+    { id: 'output', type: 'output', label: 'المخرج', dataType: 'any', multiple: true },
   ],
   properties: [
     {
       name: 'mode',
-      displayName: 'Merge Mode',
+      displayName: 'وضع الدمج',
       type: 'select',
-      description: 'How to merge the inputs',
+      description: 'كيفية دمج المدخلات',
       default: 'append',
       options: [
-        { name: 'Append', value: 'append', description: 'Combine all items' },
-        { name: 'Merge by Index', value: 'index', description: 'Merge matching indices' },
-        { name: 'Merge by Key', value: 'key', description: 'Merge by a common key' },
+        { name: 'إلحاق', value: 'append', description: 'جمع كل العناصر' },
+        { name: 'دمج بالفهرس', value: 'index', description: 'دمج الفهارس المتطابقة' },
+        { name: 'دمج بالمفتاح', value: 'key', description: 'دمج بمفتاح مشترك' },
       ],
     },
   ],
@@ -365,43 +365,43 @@ export const mergeNode: NodeDefinition = {
 
 export const consoleLogNode: NodeDefinition = {
   id: 'console-log',
-  name: 'Console Log',
-  description: 'Log data for debugging and inspection.',
+  name: 'سجل التصحيح',
+  description: 'تسجيل البيانات للتصحيح والفحص.',
   category: 'output',
   icon: '\ud83d\udcdd',
   version: 1,
   inputs: [
-    { id: 'input', type: 'input', label: 'Input', dataType: 'any', multiple: true },
+    { id: 'input', type: 'input', label: 'المدخل', dataType: 'any', multiple: true },
   ],
   outputs: [
-    { id: 'output', type: 'output', label: 'Output', dataType: 'any', multiple: true },
+    { id: 'output', type: 'output', label: 'المخرج', dataType: 'any', multiple: true },
   ],
   properties: [
     {
       name: 'message',
-      displayName: 'Message',
+      displayName: 'الرسالة',
       type: 'string',
-      description: 'Optional message prefix',
-      placeholder: 'Debug: current state',
+      description: 'بادئة الرسالة (اختياري)',
+      placeholder: 'تصحيح: الحالة الحالية',
     },
     {
       name: 'logLevel',
-      displayName: 'Log Level',
+      displayName: 'مستوى السجل',
       type: 'select',
-      description: 'Severity level',
+      description: 'مستوى الخطورة',
       default: 'info',
       options: [
-        { name: 'Debug', value: 'debug' },
-        { name: 'Info', value: 'info' },
-        { name: 'Warning', value: 'warn' },
-        { name: 'Error', value: 'error' },
+        { name: 'تصحيح', value: 'debug' },
+        { name: 'معلومات', value: 'info' },
+        { name: 'تحذير', value: 'warn' },
+        { name: 'خطأ', value: 'error' },
       ],
     },
     {
       name: 'passthrough',
-      displayName: 'Pass Through',
+      displayName: 'تمرير',
       type: 'boolean',
-      description: 'Pass input data to output',
+      description: 'تمرير بيانات المدخل إلى المخرج',
       default: true,
     },
   ],
@@ -410,38 +410,38 @@ export const consoleLogNode: NodeDefinition = {
 
 export const emailNode: NodeDefinition = {
   id: 'email-node',
-  name: 'Send Email',
-  description: 'Send email notifications.',
+  name: 'إرسال بريد',
+  description: 'إرسال إشعارات بالبريد الإلكتروني.',
   category: 'output',
   icon: '\ud83d\udce7',
   version: 1,
   inputs: [
-    { id: 'input', type: 'input', label: 'Input', dataType: 'any', multiple: true },
+    { id: 'input', type: 'input', label: 'المدخل', dataType: 'any', multiple: true },
   ],
   outputs: [
-    { id: 'output', type: 'output', label: 'Output', dataType: 'any', multiple: true },
+    { id: 'output', type: 'output', label: 'المخرج', dataType: 'any', multiple: true },
   ],
   properties: [
     {
       name: 'to',
-      displayName: 'To',
+      displayName: 'إلى',
       type: 'string',
-      description: 'Recipient email address',
+      description: 'عنوان البريد الإلكتروني للمستلم',
       required: true,
       placeholder: 'user@example.com',
     },
     {
       name: 'subject',
-      displayName: 'Subject',
+      displayName: 'الموضوع',
       type: 'string',
-      description: 'Email subject',
+      description: 'موضوع البريد',
       required: true,
     },
     {
       name: 'body',
-      displayName: 'Body',
+      displayName: 'المحتوى',
       type: 'string',
-      description: 'Email body content',
+      description: 'محتوى البريد',
     },
   ],
   defaults: { to: '', subject: '', body: '' },
@@ -449,43 +449,43 @@ export const emailNode: NodeDefinition = {
 
 export const telegramNode: NodeDefinition = {
   id: 'telegram-node',
-  name: 'Send Telegram',
-  description: 'Send messages via Telegram.',
+  name: 'إرسال تيليجرام',
+  description: 'إرسال رسائل عبر تيليجرام.',
   category: 'output',
   icon: '\u2708\ufe0f',
   version: 1,
   inputs: [
-    { id: 'input', type: 'input', label: 'Input', dataType: 'any', multiple: true },
+    { id: 'input', type: 'input', label: 'المدخل', dataType: 'any', multiple: true },
   ],
   outputs: [
-    { id: 'output', type: 'output', label: 'Output', dataType: 'any', multiple: true },
+    { id: 'output', type: 'output', label: 'المخرج', dataType: 'any', multiple: true },
   ],
   properties: [
     {
       name: 'chatId',
-      displayName: 'Chat ID',
+      displayName: 'معرف المحادثة',
       type: 'string',
-      description: 'Telegram chat ID or @channel',
+      description: 'معرف محادثة تيليجرام أو @القناة',
       required: true,
       placeholder: '@my_channel or 12345678',
     },
     {
       name: 'message',
-      displayName: 'Message',
+      displayName: 'الرسالة',
       type: 'string',
-      description: 'Message to send',
+      description: 'الرسالة المراد إرسالها',
       required: true,
     },
     {
       name: 'parseMode',
-      displayName: 'Parse Mode',
+      displayName: 'وضع التنسيق',
       type: 'select',
-      description: 'Text formatting',
+      description: 'تنسيق النص',
       default: 'Markdown',
       options: [
         { name: 'Markdown', value: 'Markdown' },
         { name: 'HTML', value: 'HTML' },
-        { name: 'Plain', value: '' },
+        { name: 'عادي', value: '' },
       ],
     },
   ],
