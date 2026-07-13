@@ -34,7 +34,10 @@ import {
 } from '@/components/flow-editor';
 import { ImportFlowDialog } from '@/components/ImportFlowDialog';
 import type { FlowEditorNode, FlowEditorEdge, FlowNodeData } from '@/components/flow-editor/types';
-import type { Flow, Run, ExecutionLog } from '@/types';
+import type { Flow, Run, ExecutionLog, NodeDefinition } from '@/types';
+
+/** Which mobile bottom sheet (if any) is currently open. Desktop ignores this entirely. */
+type MobileSheet = 'none' | 'palette' | 'config';
 
 interface PageProps {
   params: { id: string };
@@ -56,6 +59,7 @@ export default function EditorPage({ params }: PageProps) {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [showImportDialog, setShowImportDialog] = useState(false);
+  const [mobileSheet, setMobileSheet] = useState<MobileSheet>('none');
 
   // Execution state
   const [isRunning, setIsRunning] = useState(false);
@@ -108,19 +112,39 @@ export default function EditorPage({ params }: PageProps) {
 
     setNodes(rfNodes);
     setEdges(rfEdges);
+    setHasUnsavedChanges(false);
   }, [flowId, router, setNodes, setEdges]);
 
-  // Track changes
-  useEffect(() => {
-    if (flow) {
-      setHasUnsavedChanges(true);
-    }
-  }, [nodes, edges, flow?.name]);
+  // Unsaved changes are flagged explicitly at each real mutation site below
+  // (node/edge changes, connections, additions, property edits, renames)
+  // rather than via a generic effect watching nodes/edges — watching the
+  // whole arrays fired the moment the flow's own nodes were first loaded,
+  // marking a freshly opened, untouched flow as "unsaved".
+  const handleNodesChange = useCallback(
+    (changes: any[]) => {
+      onNodesChange(changes);
+      if (changes.some((c) => c.type !== 'select' && c.type !== 'dimensions')) {
+        setHasUnsavedChanges(true);
+      }
+    },
+    [onNodesChange]
+  );
+
+  const handleEdgesChange = useCallback(
+    (changes: any[]) => {
+      onEdgesChange(changes);
+      if (changes.some((c) => c.type !== 'select')) {
+        setHasUnsavedChanges(true);
+      }
+    },
+    [onEdgesChange]
+  );
 
   // Handle node connection
   const handleConnect = useCallback(
     (connection: Connection) => {
       setEdges((eds) => addEdge({ ...connection, type: 'smoothstep' }, eds));
+      setHasUnsavedChanges(true);
     },
     [setEdges]
   );
@@ -129,6 +153,8 @@ export default function EditorPage({ params }: PageProps) {
   const handleNodeClick = useCallback(
     (_: React.MouseEvent, node: FlowEditorNode) => {
       setSelectedNode(node);
+      // On mobile/tablet the config panel lives in a bottom sheet instead of the sidebar
+      setMobileSheet('config');
     },
     []
   );
@@ -136,6 +162,12 @@ export default function EditorPage({ params }: PageProps) {
   // Handle pane click (deselect)
   const handlePaneClick = useCallback(() => {
     setSelectedNode(null);
+    setMobileSheet('none');
+  }, []);
+
+  // Close whichever mobile bottom sheet is open
+  const closeMobileSheet = useCallback(() => {
+    setMobileSheet('none');
   }, []);
 
   // Handle adding new node
@@ -148,8 +180,38 @@ export default function EditorPage({ params }: PageProps) {
         data,
       };
       setNodes((nds) => [...nds, newNode]);
+      setHasUnsavedChanges(true);
     },
     [setNodes]
+  );
+
+  // Add a node from the mobile "add node" sheet (tap-to-add instead of drag-and-drop)
+  const handleAddNodeMobile = useCallback(
+    (definition: NodeDefinition) => {
+      const center = reactFlowInstance
+        ? reactFlowInstance.screenToFlowPosition({
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
+          })
+        : { x: 250, y: 200 };
+
+      // Nudge each new node slightly so repeated taps don't stack exactly on top of each other
+      const offset = (nodes.length % 6) * 24;
+
+      handleNodeAdd(
+        definition.category,
+        { x: center.x + offset, y: center.y + offset },
+        {
+          nodeType: definition.id,
+          label: definition.name,
+          category: definition.category,
+          icon: definition.icon,
+          properties: { ...(definition.defaults || {}) },
+        }
+      );
+      setMobileSheet('none');
+    },
+    [reactFlowInstance, nodes.length, handleNodeAdd]
   );
 
   // Handle property change
@@ -187,6 +249,7 @@ export default function EditorPage({ params }: PageProps) {
             }
           : prev
       );
+      setHasUnsavedChanges(true);
     },
     [setNodes]
   );
@@ -194,6 +257,7 @@ export default function EditorPage({ params }: PageProps) {
   // Handle name change
   const handleNameChange = useCallback((name: string) => {
     setFlow((prev) => (prev ? { ...prev, name } : prev));
+    setHasUnsavedChanges(true);
   }, []);
 
   // Save flow
@@ -364,13 +428,6 @@ export default function EditorPage({ params }: PageProps) {
 
   return (
     <div className="h-screen flex flex-col bg-background">
-      {/* Mobile Notice */}
-      <div className="lg:hidden bg-amber-500/20 border-b border-amber-500/30 px-4 py-3 text-center">
-        <p className="text-sm text-amber-400">
-          للحصول على أفضل تجربة، استخدم جهاز الكمبيوتر لتعديل المسارات
-        </p>
-      </div>
-
       {/* Toolbar */}
       <FlowToolbar
         flow={flow}
@@ -384,11 +441,12 @@ export default function EditorPage({ params }: PageProps) {
         onImport={() => setShowImportDialog(true)}
         onNameChange={handleNameChange}
         onBack={() => router.push('/')}
+        onAddNodeMobile={() => setMobileSheet('palette')}
       />
 
       {/* Main Editor Area */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Node Palette */}
+        {/* Node Palette (desktop sidebar) */}
         <NodePalette nodes={allNodeDefinitions} />
 
         {/* Flow Canvas */}
@@ -396,8 +454,8 @@ export default function EditorPage({ params }: PageProps) {
           nodes={nodes}
           edges={edges}
           nodeDefinitions={allNodeDefinitionsMap}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
+          onNodesChange={handleNodesChange}
+          onEdgesChange={handleEdgesChange}
           onConnect={handleConnect}
           onNodeClick={handleNodeClick}
           onPaneClick={handlePaneClick}
@@ -406,7 +464,7 @@ export default function EditorPage({ params }: PageProps) {
           className="flex-1"
         />
 
-        {/* Node Config Panel */}
+        {/* Node Config Panel (desktop sidebar) */}
         <NodeConfigPanel
           node={selectedNode}
           nodeDefinition={selectedNodeDefinition}
@@ -422,6 +480,39 @@ export default function EditorPage({ params }: PageProps) {
         logs={executionLogs}
         onClear={handleClearLogs}
       />
+
+      {/* Mobile bottom sheet: node palette (add) or node config (edit).
+          Desktop keeps the sidebars above; this is lg:hidden and only mounted
+          while active so it never leaves a stray peeking tab behind. */}
+      {mobileSheet !== 'none' && (
+        <>
+          <div className="lg:hidden mobile-overlay" onClick={closeMobileSheet} />
+          <div
+            className="lg:hidden fixed inset-x-0 bottom-0 z-50 bg-surface border-t border-border rounded-t-2xl shadow-2xl animate-slide-up flex flex-col"
+            style={{ maxHeight: '75vh' }}
+          >
+            <div className="drawer-handle shrink-0" onClick={closeMobileSheet} />
+            <div className="overflow-y-auto px-3 pb-4">
+              {mobileSheet === 'palette' && (
+                <NodePalette
+                  nodes={allNodeDefinitions}
+                  variant="sheet"
+                  onNodeSelect={handleAddNodeMobile}
+                />
+              )}
+              {mobileSheet === 'config' && selectedNode && (
+                <NodeConfigPanel
+                  variant="sheet"
+                  node={selectedNode}
+                  nodeDefinition={selectedNodeDefinition}
+                  onPropertyChange={handlePropertyChange}
+                  onClose={closeMobileSheet}
+                />
+              )}
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Import Dialog */}
       <ImportFlowDialog

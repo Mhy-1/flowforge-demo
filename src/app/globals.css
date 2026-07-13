@@ -169,6 +169,14 @@
   @apply bg-surface border border-border rounded-lg shadow-lg overflow-hidden;
 }
 
+/* Minimap is supplementary detail - hide below desktop so it doesn't compete
+   with the canvas and zoom controls for scarce mobile/tablet screen space */
+@media (max-width: 1023px) {
+  .react-flow__minimap {
+    display: none;
+  }
+}
+
 .react-flow__minimap-mask {
   fill: rgba(10, 10, 15, 0.8);
 }

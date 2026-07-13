@@ -14,11 +14,15 @@ import { categoryStyles, categoryConfig } from './types';
 interface NodePaletteProps {
   nodes: NodeDefinition[];
   onDragStart?: (event: DragEvent, nodeDefinition: NodeDefinition) => void;
+  /** 'sidebar' = desktop panel (default). 'sheet' = mobile bottom-sheet content: full width, tap-to-add instead of drag. */
+  variant?: 'sidebar' | 'sheet';
+  onNodeSelect?: (nodeDefinition: NodeDefinition) => void;
 }
 
 const categoryOrder: NodeCategory[] = ['trigger', 'action', 'logic', 'transform', 'output'];
 
-export function NodePalette({ nodes, onDragStart }: NodePaletteProps) {
+export function NodePalette({ nodes, onDragStart, variant = 'sidebar', onNodeSelect }: NodePaletteProps) {
+  const isSheet = variant === 'sheet';
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedCategories, setExpandedCategories] = useState<Set<NodeCategory>>(
     new Set(categoryOrder)
@@ -94,9 +98,16 @@ export function NodePalette({ nodes, onDragStart }: NodePaletteProps) {
   );
 
   return (
-    <div className="w-64 border-r border-border bg-surface flex-col h-full hidden lg:flex">
+    <div
+      className={cn(
+        'flex-col',
+        isSheet
+          ? 'flex w-full'
+          : 'w-64 border-r border-border bg-surface h-full hidden lg:flex'
+      )}
+    >
       {/* Header */}
-      <div className="p-4 border-b border-border-subtle">
+      <div className={cn('border-b border-border-subtle', isSheet ? 'px-1 pb-3' : 'p-4')}>
         <h2 className="text-sm font-medium text-text mb-3">العقد</h2>
 
         {/* Search */}
@@ -120,7 +131,7 @@ export function NodePalette({ nodes, onDragStart }: NodePaletteProps) {
       </div>
 
       {/* Node Categories */}
-      <div className="flex-1 overflow-y-auto p-2">
+      <div className={cn(isSheet ? 'px-1 py-2' : 'flex-1 overflow-y-auto p-2')}>
         {categoryOrder.map((category) => {
           const categoryNodes = filteredGroups.get(category);
           if (!categoryNodes || categoryNodes.length === 0) return null;
@@ -151,13 +162,26 @@ export function NodePalette({ nodes, onDragStart }: NodePaletteProps) {
                   {categoryNodes.map((node) => (
                     <div
                       key={node.id}
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, node)}
+                      draggable={!isSheet}
+                      onDragStart={!isSheet ? (e) => handleDragStart(e, node) : undefined}
+                      onClick={isSheet ? () => onNodeSelect?.(node) : undefined}
+                      role={isSheet ? 'button' : undefined}
+                      tabIndex={isSheet ? 0 : undefined}
+                      onKeyDown={
+                        isSheet
+                          ? (e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                onNodeSelect?.(node);
+                              }
+                            }
+                          : undefined
+                      }
                       className={cn(
-                        'flex items-center gap-2 px-3 py-2 rounded-lg cursor-grab',
+                        'flex items-center gap-2 px-3 py-2.5 rounded-lg',
                         'border border-transparent transition-all duration-200',
                         'hover:border-border-accent hover:bg-surface-hover',
-                        'active:cursor-grabbing active:scale-[0.98]',
+                        isSheet ? 'cursor-pointer active:scale-[0.98]' : 'cursor-grab active:cursor-grabbing active:scale-[0.98]',
                         styles.bg
                       )}
                     >
@@ -199,9 +223,9 @@ export function NodePalette({ nodes, onDragStart }: NodePaletteProps) {
       </div>
 
       {/* Footer Hint */}
-      <div className="p-3 border-t border-border-subtle">
+      <div className={cn('border-t border-border-subtle', isSheet ? 'px-1 py-3' : 'p-3')}>
         <p className="text-xs text-text-subtle text-center">
-          اسحب العقد إلى اللوحة
+          {isSheet ? 'اضغط على عقدة لإضافتها إلى المسار' : 'اسحب العقد إلى اللوحة'}
         </p>
       </div>
     </div>

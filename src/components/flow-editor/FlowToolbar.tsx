@@ -22,6 +22,7 @@ interface FlowToolbarProps {
   onImport: () => void;
   onNameChange: (name: string) => void;
   onBack: () => void;
+  onAddNodeMobile?: () => void;
   className?: string;
 }
 
@@ -37,6 +38,7 @@ export function FlowToolbar({
   onImport,
   onNameChange,
   onBack,
+  onAddNodeMobile,
   className,
 }: FlowToolbarProps) {
   const [isEditingName, setIsEditingName] = useState(false);
@@ -65,14 +67,14 @@ export function FlowToolbar({
 
   const getStatusColor = () => {
     if (isRunning) return 'bg-amber-500';
-    if (lastRun?.status === 'completed') return 'bg-green-500';
+    if (lastRun?.status === 'success' || lastRun?.status === 'completed') return 'bg-green-500';
     if (lastRun?.status === 'failed') return 'bg-red-500';
     return 'bg-gray-500';
   };
 
   const getStatusText = () => {
     if (isRunning) return 'جاري التشغيل...';
-    if (lastRun?.status === 'completed') return 'آخر تشغيل: نجاح';
+    if (lastRun?.status === 'success' || lastRun?.status === 'completed') return 'آخر تشغيل: نجاح';
     if (lastRun?.status === 'failed') return 'آخر تشغيل: فشل';
     return 'لم يتم التشغيل';
   };
@@ -80,19 +82,19 @@ export function FlowToolbar({
   return (
     <div
       className={cn(
-        'flex items-center justify-between px-4 py-3 border-b border-border bg-surface',
+        'flex items-center justify-between gap-2 px-3 sm:px-4 py-2 sm:py-3 border-b border-border bg-surface',
         className
       )}
     >
       {/* Left Section - Back & Flow Name */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4 min-w-0">
         <button
           onClick={onBack}
-          className="flex items-center gap-1.5 text-sm text-text-muted hover:text-text transition-colors"
+          className="flex items-center gap-1.5 shrink-0 text-sm text-text-muted hover:text-text transition-colors p-1.5 -m-1.5 rounded-lg hover:bg-surface-hover"
           aria-label="العودة للوحة التحكم"
         >
           <svg
-            className="w-4 h-4 rtl-flip"
+            className="w-4 h-4 rtl-flip shrink-0"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -104,10 +106,10 @@ export function FlowToolbar({
               d="M15 19l-7-7 7-7"
             />
           </svg>
-          <span>رجوع</span>
+          <span className="hidden sm:inline">رجوع</span>
         </button>
 
-        <div className="h-6 w-px bg-border" />
+        <div className="h-6 w-px bg-border hidden sm:block shrink-0" />
 
         {isEditingName ? (
           <input
@@ -116,17 +118,17 @@ export function FlowToolbar({
             onChange={(e) => setEditName(e.target.value)}
             onBlur={handleNameSubmit}
             onKeyDown={handleKeyDown}
-            className="px-2 py-1 text-lg font-medium bg-background border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary text-text"
+            className="min-w-0 max-w-[55vw] sm:max-w-xs px-2 py-1 text-base sm:text-lg font-medium bg-background border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary text-text"
             autoFocus
           />
         ) : (
           <button
             onClick={() => setIsEditingName(true)}
-            className="flex items-center gap-2 text-lg font-medium text-text hover:text-primary transition-colors group"
+            className="flex items-center gap-2 min-w-0 text-base sm:text-lg font-medium text-text hover:text-primary transition-colors group"
           >
-            {flow.name}
+            <span className="truncate max-w-[40vw] sm:max-w-xs">{flow.name}</span>
             <svg
-              className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="hidden sm:block w-4 h-4 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -142,25 +144,58 @@ export function FlowToolbar({
         )}
 
         {hasUnsavedChanges && (
-          <span className="text-xs text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">
+          <span
+            className="hidden sm:inline shrink-0 text-xs text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded"
+          >
             غير محفوظ
           </span>
         )}
+        {hasUnsavedChanges && (
+          <span
+            className="sm:hidden shrink-0 w-2 h-2 rounded-full bg-amber-400"
+            title="غير محفوظ"
+          />
+        )}
       </div>
 
-      {/* Center Section - Status */}
-      <div className="flex items-center gap-2 text-sm text-text-muted">
+      {/* Center Section - Status (hidden on small screens to save space) */}
+      <div className="hidden md:flex items-center gap-2 text-sm text-text-muted shrink-0">
         <span className={cn('w-2 h-2 rounded-full', getStatusColor())} />
         <span>{getStatusText()}</span>
       </div>
 
       {/* Right Section - Actions */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+        {/* Add Node - mobile/tablet only, desktop already has the node palette sidebar */}
+        {onAddNodeMobile && (
+          <button
+            onClick={onAddNodeMobile}
+            className="lg:hidden flex items-center justify-center w-9 h-9 text-text-muted hover:text-text hover:bg-surface-hover rounded-lg transition-colors"
+            title="إضافة عقدة"
+            aria-label="إضافة عقدة"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+          </button>
+        )}
+
         {/* Import */}
         <button
           onClick={onImport}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-text-muted hover:text-text hover:bg-surface-hover rounded-lg transition-colors"
+          className="hidden sm:flex items-center gap-1.5 px-2.5 lg:px-3 py-1.5 text-sm text-text-muted hover:text-text hover:bg-surface-hover rounded-lg transition-colors"
           title="استيراد مسار"
+          aria-label="استيراد مسار"
         >
           <svg
             className="w-4 h-4"
@@ -175,14 +210,15 @@ export function FlowToolbar({
               d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
             />
           </svg>
-          <span>استيراد</span>
+          <span className="hidden lg:inline">استيراد</span>
         </button>
 
         {/* Export */}
         <button
           onClick={onExport}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-text-muted hover:text-text hover:bg-surface-hover rounded-lg transition-colors"
+          className="hidden sm:flex items-center gap-1.5 px-2.5 lg:px-3 py-1.5 text-sm text-text-muted hover:text-text hover:bg-surface-hover rounded-lg transition-colors"
           title="تصدير مسار"
+          aria-label="تصدير مسار"
         >
           <svg
             className="w-4 h-4"
@@ -197,21 +233,22 @@ export function FlowToolbar({
               d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
             />
           </svg>
-          <span>تصدير</span>
+          <span className="hidden lg:inline">تصدير</span>
         </button>
 
-        <div className="h-6 w-px bg-border mx-1" />
+        <div className="h-6 w-px bg-border mx-1 hidden sm:block" />
 
         {/* Save */}
         <button
           onClick={onSave}
           disabled={isSaving || !hasUnsavedChanges}
           className={cn(
-            'flex items-center gap-1.5 px-4 py-1.5 text-sm rounded-lg transition-colors',
+            'flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 text-sm rounded-lg transition-colors',
             hasUnsavedChanges
               ? 'bg-surface-hover text-text hover:bg-border'
               : 'bg-surface-hover/50 text-text-subtle cursor-not-allowed'
           )}
+          aria-label={isSaving ? 'جاري الحفظ' : 'حفظ'}
         >
           {isSaving ? (
             <>
@@ -234,7 +271,7 @@ export function FlowToolbar({
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 />
               </svg>
-              <span>جاري الحفظ...</span>
+              <span className="hidden sm:inline">جاري الحفظ...</span>
             </>
           ) : (
             <>
@@ -251,7 +288,7 @@ export function FlowToolbar({
                   d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
                 />
               </svg>
-              <span>حفظ</span>
+              <span className="hidden sm:inline">حفظ</span>
             </>
           )}
         </button>
@@ -261,11 +298,12 @@ export function FlowToolbar({
           onClick={onRun}
           disabled={isRunning}
           className={cn(
-            'flex items-center gap-1.5 px-4 py-1.5 text-sm rounded-lg transition-colors',
+            'flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 text-sm rounded-lg transition-colors',
             isRunning
               ? 'bg-amber-500/20 text-amber-400 cursor-not-allowed'
               : 'bg-primary hover:bg-primary-hover text-white'
           )}
+          aria-label={isRunning ? 'جاري التشغيل' : 'تشغيل'}
         >
           {isRunning ? (
             <>
@@ -288,7 +326,7 @@ export function FlowToolbar({
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 />
               </svg>
-              <span>جاري التشغيل...</span>
+              <span className="hidden sm:inline">جاري التشغيل...</span>
             </>
           ) : (
             <>
@@ -311,7 +349,7 @@ export function FlowToolbar({
                   d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <span>تشغيل</span>
+              <span className="hidden sm:inline">تشغيل</span>
             </>
           )}
         </button>

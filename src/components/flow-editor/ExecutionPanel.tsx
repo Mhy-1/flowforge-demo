@@ -25,8 +25,13 @@ export function ExecutionPanel({
   onClear,
   className,
 }: ExecutionPanelProps) {
-  const [isExpanded, setIsExpanded] = useState(true);
-  const [height, setHeight] = useState(200);
+  // Default collapsed on small/medium screens to leave room for the canvas; expanded on desktop
+  const [isExpanded, setIsExpanded] = useState(() =>
+    typeof window === 'undefined' ? true : window.innerWidth >= 1024
+  );
+  const [height, setHeight] = useState(() =>
+    typeof window === 'undefined' ? 200 : Math.min(200, Math.round(window.innerHeight * 0.3))
+  );
   const logsEndRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
 
@@ -99,10 +104,10 @@ export function ExecutionPanel({
       className={cn('border-t border-border bg-surface flex flex-col', className)}
       style={{ height: isExpanded ? height : 40 }}
     >
-      {/* Resize Handle */}
+      {/* Resize Handle - mouse-drag only, hidden on touch/mobile widths */}
       {isExpanded && (
         <div
-          className="h-1 cursor-ns-resize hover:bg-primary/50 transition-colors"
+          className="hidden lg:block h-1 cursor-ns-resize hover:bg-primary/50 transition-colors"
           onMouseDown={handleMouseDown}
         />
       )}
@@ -141,12 +146,12 @@ export function ExecutionPanel({
             <span
               className={cn(
                 'text-xs px-2 py-0.5 rounded',
-                currentRun.status === 'completed'
+                currentRun.status === 'success' || currentRun.status === 'completed'
                   ? 'text-green-400 bg-green-500/10'
                   : 'text-red-400 bg-red-500/10'
               )}
             >
-              {currentRun.status === 'completed' ? 'مكتمل' : 'فشل'}
+              {currentRun.status === 'success' || currentRun.status === 'completed' ? 'مكتمل' : 'فشل'}
             </span>
           )}
 

@@ -17,6 +17,8 @@ interface NodeConfigPanelProps {
   nodeDefinition: NodeDefinition | null;
   onPropertyChange: (nodeId: string, propertyName: string, value: unknown) => void;
   onClose: () => void;
+  /** 'sidebar' = desktop panel (default). 'sheet' = mobile bottom-sheet content: full width, no placeholder state. */
+  variant?: 'sidebar' | 'sheet';
   className?: string;
 }
 
@@ -25,8 +27,10 @@ export function NodeConfigPanel({
   nodeDefinition,
   onPropertyChange,
   onClose,
+  variant = 'sidebar',
   className,
 }: NodeConfigPanelProps) {
+  const isSheet = variant === 'sheet';
   const [localValues, setLocalValues] = useState<Record<string, unknown>>({});
 
   // Sync local values when node changes
@@ -47,6 +51,10 @@ export function NodeConfigPanel({
   );
 
   if (!node || !nodeDefinition) {
+    // In sheet mode the parent only mounts this panel when a node is selected,
+    // so there is nothing meaningful to show here.
+    if (isSheet) return null;
+
     return (
       <div
         className={cn(
@@ -83,7 +91,8 @@ export function NodeConfigPanel({
   return (
     <div
       className={cn(
-        'w-80 border-l border-border bg-surface flex-col hidden lg:flex',
+        'flex-col flex',
+        isSheet ? 'w-full' : 'w-80 border-l border-border bg-surface hidden lg:flex',
         className
       )}
     >
