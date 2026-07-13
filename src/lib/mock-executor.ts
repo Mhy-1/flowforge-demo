@@ -48,100 +48,100 @@ function getNodeExecutionMessages(node: FlowNode): { start: string; complete: st
   switch (nodeType) {
     case 'manual-trigger':
       return {
-        start: 'Manual trigger activated',
-        complete: 'Trigger data passed to next node',
+        start: 'تم تفعيل التشغيل اليدوي',
+        complete: 'تم تمرير بيانات التشغيل إلى العقدة التالية',
         data: { triggered: true, timestamp: new Date().toISOString() },
       };
 
     case 'webhook-trigger':
       return {
-        start: 'Webhook received incoming request',
-        complete: 'Webhook payload processed',
+        start: 'تم استلام طلب Webhook',
+        complete: 'تمت معالجة بيانات Webhook',
         data: { method: 'POST', path: '/webhook/demo', body: { event: 'demo' } },
       };
 
     case 'schedule-trigger':
       return {
-        start: 'Schedule trigger activated',
-        complete: 'Schedule executed on time',
+        start: 'تم تفعيل مشغل الجدولة',
+        complete: 'تم تنفيذ الجدولة في وقتها',
         data: { schedule: '0 9 * * *', lastRun: new Date().toISOString() },
       };
 
     case 'http-request':
       return {
-        start: `Making HTTP request to ${(node.data?.properties as Record<string, unknown>)?.url || 'API endpoint'}`,
-        complete: 'HTTP request completed successfully',
+        start: `إرسال طلب HTTP إلى ${(node.data?.properties as Record<string, unknown>)?.url || 'نقطة نهاية API'}`,
+        complete: 'اكتمل طلب HTTP بنجاح',
         data: { statusCode: 200, responseTime: Math.floor(Math.random() * 500) + 100 },
       };
 
     case 'ai-completion':
       return {
-        start: 'Sending request to AI model',
-        complete: 'AI response generated',
+        start: 'إرسال الطلب إلى نموذج الذكاء الاصطناعي',
+        complete: 'تم توليد استجابة الذكاء الاصطناعي',
         data: { model: 'gpt-4', tokens: Math.floor(Math.random() * 500) + 100 },
       };
 
     case 'json-transform':
       return {
-        start: 'Transforming JSON data',
-        complete: 'Data transformation complete',
+        start: 'تحويل بيانات JSON',
+        complete: 'اكتمل تحويل البيانات',
         data: { itemsProcessed: Math.floor(Math.random() * 10) + 1 },
       };
 
     case 'code-node':
       return {
-        start: 'Executing custom code',
-        complete: 'Code execution finished',
+        start: 'تنفيذ الكود المخصص',
+        complete: 'انتهى تنفيذ الكود',
         data: { executionTime: `${Math.floor(Math.random() * 100)}ms` },
       };
 
     case 'if-node':
       const conditionResult = Math.random() > 0.5;
       return {
-        start: 'Evaluating condition',
-        complete: `Condition evaluated: ${conditionResult ? 'TRUE' : 'FALSE'}`,
+        start: 'تقييم الشرط',
+        complete: `نتيجة تقييم الشرط: ${conditionResult ? 'صحيح' : 'خطأ'}`,
         data: { result: conditionResult, branch: conditionResult ? 'true' : 'false' },
       };
 
     case 'switch-node':
       return {
-        start: 'Evaluating switch conditions',
-        complete: 'Switch routing complete',
+        start: 'تقييم حالات التبديل',
+        complete: 'اكتمل توجيه التبديل',
         data: { matchedCase: 'case_1' },
       };
 
     case 'merge-node':
       return {
-        start: 'Merging input data streams',
-        complete: 'Data merged successfully',
+        start: 'دمج مصادر البيانات المدخلة',
+        complete: 'تم دمج البيانات بنجاح',
         data: { inputCount: 2, outputItems: 3 },
       };
 
     case 'console-log':
       return {
-        start: 'Logging data to console',
-        complete: 'Data logged',
+        start: 'تسجيل البيانات في السجل',
+        complete: 'تم تسجيل البيانات',
         data: { logLevel: 'info', itemCount: 1 },
       };
 
     case 'email-node':
       return {
-        start: 'Preparing email for delivery',
-        complete: 'Email sent successfully',
-        data: { to: 'demo@example.com', subject: 'FlowForge Notification' },
+        start: 'تحضير البريد الإلكتروني للإرسال',
+        complete: 'تم إرسال البريد الإلكتروني بنجاح',
+        data: { to: 'demo@example.com', subject: 'إشعار من فلو فورج' },
       };
 
     case 'telegram-node':
       return {
-        start: 'Sending Telegram message',
-        complete: 'Message delivered',
+        start: 'إرسال رسالة تيليجرام',
+        complete: 'تم تسليم الرسالة',
         data: { chatId: '12345678', messageId: Math.floor(Math.random() * 10000) },
       };
 
     default:
       return {
-        start: `Executing ${label}`,
-        complete: `${label} completed`,
+        start: `تنفيذ ${label}`,
+        complete: `اكتمل تنفيذ ${label}`,
         data: { processed: true },
       };
   }
@@ -227,9 +227,9 @@ export async function executeMockFlow(
   const startLog = createLog(
     run.id,
     'system',
-    'System',
+    'النظام',
     'info',
-    `Starting flow execution: ${flow.name}`,
+    `بدء تنفيذ المسار: ${flow.name}`,
     { flowId: flow.id, nodeCount: flow.nodes.length }
   );
   logs.push(startLog);
@@ -273,7 +273,7 @@ export async function executeMockFlow(
         node.id,
         nodeLabel,
         'error',
-        `Error executing ${nodeLabel}: Simulated failure for demo purposes`,
+        `خطأ في تنفيذ ${nodeLabel}: فشل محاكاة لأغراض العرض التجريبي`,
         { error: 'DEMO_ERROR', code: 'E001' }
       );
       logs.push(errorLog);
@@ -281,7 +281,7 @@ export async function executeMockFlow(
       callbacks.onNodeComplete(node.id, false);
 
       finalStatus = 'failed';
-      errorMessage = `Node "${nodeLabel}" failed: Simulated error`;
+      errorMessage = `فشلت العقدة "${nodeLabel}": خطأ محاكاة`;
       break;
     }
 
@@ -308,11 +308,11 @@ export async function executeMockFlow(
   const finalLog = createLog(
     run.id,
     'system',
-    'System',
+    'النظام',
     finalStatus === 'success' ? 'info' : 'error',
     finalStatus === 'success'
-      ? `Flow completed successfully in ${durationMs}ms`
-      : `Flow execution failed: ${errorMessage}`,
+      ? `اكتمل المسار بنجاح خلال ${durationMs} مللي ثانية`
+      : `فشل تنفيذ المسار: ${errorMessage}`,
     { durationMs, status: finalStatus }
   );
   logs.push(finalLog);
