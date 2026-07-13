@@ -6,7 +6,18 @@
  * Copyright footer with demo badge
  */
 
+import { usePathname } from 'next/navigation';
+
 export function Footer() {
+  const pathname = usePathname();
+
+  // The editor is a fixed full-screen (h-screen) app view; a footer appended
+  // after it would add extra height below the viewport and enable a stray
+  // page-level scroll that reveals a sliver of footer under the canvas.
+  if (pathname?.startsWith('/editor')) {
+    return null;
+  }
+
   return (
     <footer className="border-t border-border bg-surface py-4 px-6">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
