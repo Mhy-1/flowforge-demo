@@ -120,6 +120,13 @@ export default function DashboardPage() {
     return statusLabels[status] || status;
   };
 
+  // Runs report status as 'success', not 'completed' — treat both as the success state
+  const getStatusBadgeClass = (status: string) => {
+    if (status === 'success' || status === 'completed') return 'bg-green-500/20 text-green-400';
+    if (status === 'failed') return 'bg-red-500/20 text-red-400';
+    return 'bg-amber-500/20 text-amber-400';
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -283,20 +290,21 @@ export default function DashboardPage() {
                       key={flow.id}
                       className="bg-surface border border-border rounded-xl p-4 hover:border-border-accent transition-colors group"
                     >
-                      <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-start justify-between mb-3 gap-2">
                         <Link
                           href={`/editor/${flow.id}`}
                           className="flex-1 min-w-0"
+                          title={flow.name}
                         >
-                          <h3 className="text-sm font-medium text-text truncate group-hover:text-primary transition-colors">
+                          <h3 className="text-sm font-medium text-text line-clamp-2 leading-snug group-hover:text-primary transition-colors">
                             {flow.name}
                           </h3>
-                          <p className="text-xs text-text-muted mt-0.5">
+                          <p className="text-xs text-text-muted mt-1">
                             {flow.nodes.length} عقدة
                           </p>
                         </Link>
 
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1 shrink-0">
                           <button
                             onClick={() => handleExportFlow(flow.id)}
                             className="p-1.5 text-text-subtle hover:text-text hover:bg-surface-hover rounded-md transition-colors"
@@ -365,11 +373,7 @@ export default function DashboardPage() {
                           <span
                             className={cn(
                               'px-1.5 py-0.5 rounded',
-                              lastRun.status === 'completed'
-                                ? 'bg-green-500/20 text-green-400'
-                                : lastRun.status === 'failed'
-                                ? 'bg-red-500/20 text-red-400'
-                                : 'bg-amber-500/20 text-amber-400'
+                              getStatusBadgeClass(lastRun.status)
                             )}
                           >
                             {getStatusLabel(lastRun.status)}
@@ -402,21 +406,18 @@ export default function DashboardPage() {
 
                   return (
                     <div key={run.id} className="p-4">
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-between gap-2 mb-2">
                         <Link
                           href={`/editor/${run.flowId}`}
-                          className="text-sm font-medium text-text hover:text-primary transition-colors truncate"
+                          className="text-sm font-medium text-text hover:text-primary transition-colors truncate min-w-0"
+                          title={flow?.name || 'مسار غير معروف'}
                         >
                           {flow?.name || 'مسار غير معروف'}
                         </Link>
                         <span
                           className={cn(
-                            'text-xs px-1.5 py-0.5 rounded',
-                            run.status === 'completed'
-                              ? 'bg-green-500/20 text-green-400'
-                              : run.status === 'failed'
-                              ? 'bg-red-500/20 text-red-400'
-                              : 'bg-amber-500/20 text-amber-400'
+                            'text-xs px-1.5 py-0.5 rounded shrink-0',
+                            getStatusBadgeClass(run.status)
                           )}
                         >
                           {getStatusLabel(run.status)}
@@ -424,15 +425,8 @@ export default function DashboardPage() {
                       </div>
                       <div className="flex items-center justify-between text-xs text-text-subtle">
                         <span>{formatDate(run.startedAt || run.createdAt)}</span>
-                        {run.completedAt && run.startedAt && (
-                          <span>
-                            {Math.round(
-                              (new Date(run.completedAt).getTime() -
-                                new Date(run.startedAt).getTime()) /
-                                1000
-                            )}
-                            s
-                          </span>
+                        {typeof run.durationMs === 'number' && (
+                          <span>{(run.durationMs / 1000).toFixed(1)}s</span>
                         )}
                       </div>
                     </div>
